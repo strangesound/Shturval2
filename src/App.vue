@@ -30,11 +30,11 @@ watch(
   position: absolute;
   top: 0;
   left: 0;
-  font-size: 2vw;
+  font-size: 1vw;
   z-index: 99999;
   background-color: black;
   color: white;
-  padding: 2vw;
-  opacity: .5;
+  padding: 1vw;
+  opacity: .2;
 }
 </style>

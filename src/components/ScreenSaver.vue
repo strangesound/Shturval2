@@ -20,5 +20,6 @@ h1 {}
     height: 100vh;
     background-color: black;
     color: white;
+    font-size: 5vw;
 }
 </style>
