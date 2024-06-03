@@ -1,0 +1,56 @@
+@font-face {
+    font-family: "Milligram";
+    font-weight: 300;
+    src: url("@/assets/fonts/Milligram/MilligramText-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Milligram";
+    font-weight: 700;
+    src: url("@/assets/fonts/Milligram/MilligramText-Bold.ttf") format("truetype");
+}
+
+
+:root {
+    --black: #383636;
+    --light: #ECEBEA;
+    --red: #981919;
+    --base-unit: 10.8;
+}
+
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+    /* width: 1080px; */
+    background-color: var(--main-color);
+    font-family: "Milligram";
+    /* font-size: calc(40vw/var(--base-unit)); */
+    font-weight: 300;
+    /* min-height: 100vh; */
+    text-align: center;
+    /* overflow: hidden; */
+    background-color: var(--light);
+    color: var(--black);
+
+}
+
+a {
+    text-decoration: none;
+    color: var(--black);
+    transition: .3s color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+a:hover {
+    color: var(--red);
+
+}
