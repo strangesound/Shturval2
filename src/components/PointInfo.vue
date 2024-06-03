@@ -10,17 +10,26 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted, defineProps, watch, onBeforeUnmount } from 'vue';
+import state from '@/store';
 
 const props = defineProps({
   point: Object
 });
 
 const showInfo = ref(false);
-const videoSrc = "./video/zamok_lastochkino_gnezdo.mp4"; // Укажите путь к вашему видео
+const videoSrc = `./video/${props.point.image.toLowerCase()}.mp4`; // Укажите путь к вашему видео
+
+let interactionBlocked = true;
+const unblockInteraction = () => {
+  interactionBlocked = false;
+};
 
 const handleVideoEnd = () => {
-  showInfo.value = true;
+  setTimeout(() => {
+    showInfo.value = true;
+    unblockInteraction();
+  }, 2000); // Плавный переход после видео
 };
 
 onMounted(() => {
@@ -36,15 +45,24 @@ onMounted(() => {
     video.style.opacity = 0;
     setTimeout(() => {
       video.pause();
+      showInfo.value = true; // Показываем информацию после остановки видео
     }, 1000); // Длительность плавного перехода
   }, 5000); // Задержка 5 секунд
 
-setTimeout(()=>{
-  showInfo.value = true; // Показываем информацию после остановки видео
+  setTimeout(unblockInteraction, 7000); // Разблокировка взаимодействия через 7 секунд
+});
 
-}, 3000)
+watch(
+  () => state.currentValue,
+  (newValue, oldValue) => {
+    if (!interactionBlocked && (newValue !== oldValue)) {
+      emit('hide');
+    }
+  }
+);
 
-
+onBeforeUnmount(() => {
+  interactionBlocked = false; // Разблокировка при демонтировании компонента
 });
 </script>
 
