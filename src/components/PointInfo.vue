@@ -11,14 +11,14 @@
 
 <script setup>
 import { ref, onMounted, defineProps, watch, onBeforeUnmount } from 'vue';
-import state from '@/store';
 
 const props = defineProps({
   point: Object
 });
 
 const showInfo = ref(false);
-const videoSrc = `./video/${props.point.image.toLowerCase()}.mp4`; // Укажите путь к вашему видео
+const videoSrc = `./video/zamok_lastochkino_gnezdo.mp4`; // Укажите путь к вашему видео
+// const videoSrc = `./video/${props.point.image.toLowerCase()}.mp4`; // Укажите путь к вашему видео
 
 let interactionBlocked = true;
 const unblockInteraction = () => {
@@ -52,14 +52,6 @@ onMounted(() => {
   setTimeout(unblockInteraction, 7000); // Разблокировка взаимодействия через 7 секунд
 });
 
-watch(
-  () => state.currentValue,
-  (newValue, oldValue) => {
-    if (!interactionBlocked && (newValue !== oldValue)) {
-      emit('hide');
-    }
-  }
-);
 
 onBeforeUnmount(() => {
   interactionBlocked = false; // Разблокировка при демонтировании компонента

@@ -1,14 +1,12 @@
 <template>
-  <div v-if="showScreenSaver" class="wrapper">
-    <ScreenSaver />
-  </div>
-  <div v-else class="wrapper">
+  <div class="wrapper">
+    <ScreenSaver v-if="showScreenSaver" />
     <img class="map" src="/images/main/map.png" alt="map">
     <div v-if="currentPoint && !showInfo" :style="pointStyle" class="point">
       <div class="tooltip">{{ currentPoint.landmark }}</div>
     </div>
     <PointInfo v-if="showInfo" :point="currentPoint" @hide="handleHidePointInfo" />
-    <Rumba :point="currentPoint"/>
+    <Rumba :point="currentPoint" />
   </div>
 </template>
 
@@ -51,7 +49,7 @@ const handleHidePointInfo = () => {
 };
 
 const checkInactivity = () => {
-  if (Date.now() - lastInteractionTime > 2000000) { // 20 секунд бездействия
+  if (Date.now() - lastInteractionTime > 20000000) { // 20 секунд бездействия
     showScreenSaver.value = true;
   } else {
     showScreenSaver.value = false;
@@ -67,10 +65,6 @@ const pointStyle = computed(() => {
     left: `${currentPoint.value.x}px`,
     top: `${currentPoint.value.y}px`,
     transform: 'translate(-50%, -130%)',
-    color: 'white',
-    backgroundColor: 'red',
-    padding: '5px',
-    borderRadius: '50%',
     textAlign: 'center',
   };
 });
@@ -78,7 +72,9 @@ const pointStyle = computed(() => {
 
 <style scoped>
 .wrapper {
-  position: relative;
+  position: absolute;
+  left: 0;
+  top: 0;
   display: flex;
   flex-direction: column;
   align-items: center;

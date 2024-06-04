@@ -10,16 +10,19 @@
 </script>
 
 <style scoped>
-h1 {}
-
 .wrapper {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
     background-color: black;
     color: white;
     font-size: 5vw;
+    z-index: 999;
 }
 </style>
