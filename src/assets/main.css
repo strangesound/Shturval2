@@ -3,14 +3,20 @@
     font-weight: 700;
     src: url("@/assets/fonts/IBMPlexSerif-Bold.ttf") format("truetype");
 }
+@font-face {
+    font-family: "Plex";
+    font-weight: 300;
+    src: url("@/assets/fonts/IBMPlexSerif-Regular.ttf") format("truetype");
+}
 
 
 
 
 :root {
-    --black: #383636;
+    --black: #000;
     --light: #ECEBEA;
     --red: #981919;
+    --brown:#402601;
     --base-unit: 10.8;
 }
 
