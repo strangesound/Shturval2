@@ -56,3 +56,13 @@ a:hover {
     color: var(--red);
 
 }
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 2s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}

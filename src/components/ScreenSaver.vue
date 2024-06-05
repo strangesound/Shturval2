@@ -1,7 +1,8 @@
 <template>
     <div class="wrapper">
-        <h1 class="">УПРАВЛЯЙ КОРАБЛЕМ</h1>
-        <h2>НАЧНИ ВРАЩАТЬ ШТУРВАЛ, ЧТОБЫ ВЫБРАТЬ ЛОКАЦИЮ</h2>
+        <!-- <h1 class="">УПРАВЛЯЙ КОРАБЛЕМ</h1>
+        <h2>НАЧНИ ВРАЩАТЬ ШТУРВАЛ, ЧТОБЫ ВЫБРАТЬ ЛОКАЦИЮ</h2> -->
+
     </div>
 </template>
 
@@ -24,5 +25,6 @@
     color: white;
     font-size: 5vw;
     z-index: 999;
+    background-image: url("/images/screensaver.png");
 }
 </style>

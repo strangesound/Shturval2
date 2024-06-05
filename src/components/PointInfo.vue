@@ -1,8 +1,6 @@
 <template>
   <div class="container">
-    <video ref="video" class="background-video" :src="videoSrc" @ended="handleVideoEnd" autoplay muted
-      playsinline></video>
-    <div v-if="showInfo" class="point-info">
+    <div class="point-info">
       <img class="landmark-img" :src="`./images/landmarks/${point.image.toLowerCase()}.jpg`">
       <div class="svitok"></div>
 
@@ -15,60 +13,73 @@
       <div class="course-container">
         <div class="course"></div>
         <p class="kurs-precision">точность курса</p>
-        <p class="scores">83 балла</p>
-        <div class="courseArrowBrown"></div>
+        <p class="scores" :style="{ opacity: opacityValue }">{{ props.score.toFixed() }} {{ getDeclension(props.score)
+          }}</p>
+        <div class="courseArrowBrown" :style="{ transform: `rotate(${degrees}deg)` }"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps, watch, onBeforeUnmount } from 'vue';
+import { defineProps, ref, onMounted } from 'vue';
+
+const opacityValue = ref(0);
+const degrees = ref(-30);
 
 const props = defineProps({
-  point: Object
+  point: Object,
+  score: Number
 });
 
-const showInfo = ref(false);
-const videoSrc = `./video/zamok_lastochkino_gnezdo.mp4`; // Укажите путь к вашему видео
-// const videoSrc = `./video/${props.point.image.toLowerCase()}.mp4`; // Укажите путь к вашему видео
+function getDeclension(number) {
+  const lastDigit = number % 10;
+  const lastTwoDigits = number % 100;
 
-let interactionBlocked = true;
-const unblockInteraction = () => {
-  interactionBlocked = false;
-};
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+    return "баллов";
+  }
+  if (lastDigit === 1) {
+    return "балл";
+  }
+  if (lastDigit >= 2 && lastDigit <= 4) {
+    return "балла";
+  }
+  return "баллов";
+}
 
-const handleVideoEnd = () => {
-  setTimeout(() => {
-    showInfo.value = true;
-    unblockInteraction();
-  }, 2000); // Плавный переход после видео
-};
+console.log(getDeclension(props.score));
 
+
+function scoreToDegrees(score) {
+  const minScore = 40;
+  const maxScore = 100;
+  const minDegrees = -30;
+  const maxDegrees = 30;
+
+  // Проверка, что балл находится в диапазоне от 40 до 100
+  if (score < minScore || score > maxScore) {
+    throw new Error("Score must be between 40 and 100");
+  }
+
+  // Линейная интерполяция для перевода баллов в градусы
+  const degrees = Math.round(((score - minScore) / (maxScore - minScore)) * (maxDegrees - minDegrees) + minDegrees);
+  console.log('degrees', degrees);
+  return degrees;
+}
 onMounted(() => {
-  const video = document.querySelector('.background-video');
-  setTimeout(() => {
-    video.style.opacity = 1;
-  }, 0); // Немедленно запускаем анимацию проявления
-  video.play();
 
-  // Таймер для плавного скрытия видео на 5 секунде
   setTimeout(() => {
-    // video.style.opacity = 0;
-    setTimeout(() => {
-      video.pause();
-      showInfo.value = true; // Показываем информацию после остановки видео
-    }, 1000); // Длительность плавного перехода
-  }, 5000); // Задержка 5 секунд
-
-  setTimeout(unblockInteraction, 7000); // Разблокировка взаимодействия через 7 секунд
+    opacityValue.value = 1;
+    degrees.value = scoreToDegrees(props.score)
+  }, 200); // Изменение opacity через 2 секунды
 });
 
 
-onBeforeUnmount(() => {
-  interactionBlocked = false; // Разблокировка при демонтировании компонента
-});
 </script>
+
+
+
 
 <style scoped>
 .container {
@@ -78,7 +89,8 @@ onBeforeUnmount(() => {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  z-index: 999999;
+  z-index: 1;
+  background-color: transparent !important;
 }
 
 .background-video {
@@ -104,7 +116,7 @@ onBeforeUnmount(() => {
   width: 100vw;
   justify-content: top;
   padding-top: 40vh;
-  color: black;
+  /* color: black; */
   opacity: 1;
   transition: opacity 1s ease-in-out;
   z-index: 5;
@@ -154,7 +166,7 @@ img {
 
 }
 
-.course-container{
+.course-container {
   position: relative;
   width: 100vw;
   display: flex;
@@ -170,7 +182,8 @@ img {
   height: 46.51vw;
   margin-top: 5vw;
   background-image: url("/images/landmarks/ui/kursArrow.png");
-  rotate: 13deg;
+  transform: rotate(-30deg);
+  transition: transform 1s ease-in-out;
 }
 
 h1 {
@@ -205,8 +218,10 @@ p {
 
 .scores {
   font-size: 4.635vw;
-  color: var(--brown);
-
   font-weight: 700;
+  color: var(--brown);
+  opacity: 0;
+  transition: opacity 2s ease;
+
 }
 </style>

@@ -1,118 +1,104 @@
 <template>
   <div class="wrapper">
-
-    <ShipGame />
-    <ScreenSaver v-if="showScreenSaver" />
+    <!-- <div class="last-time">{{ lastInteractionTime }}</div> -->
+    <Transition>
+      <ScreenSaver v-if="showScreenSaver" />
+    </Transition>
     <img class="map" src="/images/main/map.png" alt="map">
-    <div v-if="currentPoint && !showInfo" :style="pointStyle" class="point">
+    <div v-if="currentPoint && !showGame" :style="pointStyle" class="point">
       <div class="tooltip">{{ currentPoint.landmark }}</div>
     </div>
-    <PointInfo v-if="showInfo" :point="currentPoint" @hide="handleHidePointInfo" />
+    <Transition>
+      <ShipGame v-if="showGame" :point="currentPoint" />
+    </Transition>
+
     <Rumba :point="currentPoint" />
   </div>
 </template>
 
 <script setup>
 import { ref, watch, computed } from 'vue';
-import state from '@/store';
+import shturval from '@/store';
 import points from '@/assets/json/points.json'; // Импорт JSON файла
 import ScreenSaver from '@/components/ScreenSaver.vue';
 import PointInfo from '@/components/PointInfo.vue';
 import Rumba from '@/components/Rumba.vue';
 import ShipGame from '@/components/ShipGame.vue';
-
-
-// Определение состояний
-const states = {
-  MAP: 'map',
-  POINT_INFO: 'point_info',
-  SCREENSAVER: 'screensaver'
-};
-
-
-
-const currentState = ref(states.MAP);
+import { states, currentState, setState } from '@/states'; // Импортируем константы и функцию
 
 const currentPointIndex = ref(0);
-const showInfo = ref(false);
+const showGame = ref(false);
 const showScreenSaver = ref(false);
 const currentPoint = computed(() => points[currentPointIndex.value]);
 let lastInteractionTime = Date.now();
 let interactionBlocked = false;
-let pointInfoTimeout = null;
-let showInfoTimeout
+let showGameTimeout
 
-// Функция для изменения состояния
-const changeState = (newState) => {
-  currentState.value = newState;
-  updateLastInteractionTime(); // Обновляем время последнего взаимодействия при смене состояния
-};
+setState(states.MAP)
 
 
-// Пример функции для входа в состояние PointInfo
-const enterPointInfo = () => {
-  changeState(states.POINT_INFO);
-  showInfo.value = true;
-  interactionBlocked = true;
-  pointInfoTimeout = setTimeout(() => {
-    interactionBlocked = false;
-  }, 7000); // 7 секунд блокировки взаимодействия
-};
+function enterPointInfo() {
+  setState(states.POINT_INFO);
+  showGame.value = true;
+
+}
 
 
 // Обработка изменения текущего значения штурвала
-watch(() => state.currentValue, (newValue, oldValue) => {
+watch(() => shturval.currentValue, (newValue, oldValue) => {
   lastInteractionTime = Date.now();
   const difference = newValue - oldValue;
 
   switch (currentState.value) {
     case states.MAP:
+      showGame.value = false
+      showScreenSaver.value = false
       if (difference > 10) {
         currentPointIndex.value = (currentPointIndex.value + 1) % points.length;
-        clearTimeout(showInfoTimeout)
-        showInfoTimeout = setTimeout(enterPointInfo, 3000);
+        clearTimeout(showGameTimeout)
+        showGameTimeout = setTimeout(enterPointInfo, 3000);
 
       } else if (difference < -10) {
         currentPointIndex.value = (currentPointIndex.value - 1 + points.length) % points.length;
-        clearTimeout(showInfoTimeout)
-        showInfoTimeout = setTimeout(enterPointInfo, 3000);
+        clearTimeout(showGameTimeout)
+        showGameTimeout = setTimeout(enterPointInfo, 3000);
       }
       break;
 
     case states.POINT_INFO:
-      if (!interactionBlocked && (difference > 10 || difference < -10)) {
-        changeState(states.MAP);
-        showInfo.value = false;
-      }
       break;
 
     case states.SCREENSAVER:
+
+      clearTimeout(showGameTimeout)
+      showGame.value = false
+      if (!showScreenSaver.value) {
+        showScreenSaver.value = true
+      }
+
       if (difference > 10 || difference < -10) {
-        changeState(states.MAP);
+        setState(states.MAP);
       }
       break;
   }
 });
 
 
-
-
-// Обновление времени последнего взаимодействия
-const updateLastInteractionTime = () => {
-  lastInteractionTime = Date.now();
-};
-
-const handleHidePointInfo = () => {
-  showInfo.value = false;
-  interactionBlocked = false;
-};
-
 // Включение скринсейвера через 20 секунд бездействия
 setInterval(() => {
-  if (Date.now() - lastInteractionTime > 20000 && currentState.value === states.MAP) {
-    changeState(states.SCREENSAVER);
+  if (Date.now() - lastInteractionTime > 600000 && currentState.value !== states.SCREENSAVER) {
+    console.log('setInterval hello');
+    console.log('Date.now()', Date.now());
+    console.log('lastInteractionTime', lastInteractionTime);
+    console.log('currentState.value', currentState.value);
+    setState(states.SCREENSAVER)
+    showScreenSaver.value = true;
+    showGame.value = false;
+
   }
 }, 1000);
+
+
 
 
 const pointStyle = computed(() => {
@@ -164,5 +150,14 @@ const pointStyle = computed(() => {
   text-align: center;
   font-size: 1.042vw;
   line-height: 1;
+}
+
+.last-time {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 2vw;
+  background-color: black;
+  z-index: 99999999999;
 }
 </style>
