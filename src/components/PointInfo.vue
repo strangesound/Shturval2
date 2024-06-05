@@ -152,7 +152,7 @@ img {
   height: 15vw;
   position: absolute;
   left: 36.458vw;
-  top: 4.688vw;
+  top: 4.2vw;
   object-fit: fill;
   z-index: -2;
 }

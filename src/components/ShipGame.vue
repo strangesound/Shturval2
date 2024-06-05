@@ -144,6 +144,30 @@ function getDeclension(number) {
     return "узлов";
 }
 
+const progressRedRotation = ref(-75); // начальное положение
+
+
+const redStyle = computed(() => ({
+    transform: `rotate(${progressRedRotation.value}deg)`,
+    transformOrigin: 'center center', // убедитесь, что центр вращения установлен правильно
+    transition: 'transform 0.5s ease-out' // плавное изменение положения
+}));
+
+// Функция для обновления прогресса
+function updateProgress() {
+    if (!videoBackground.value) return;
+
+    const duration = 30; // предполагаем, что продолжительность видео 30 секунд
+    const current = videoBackground.value.currentTime;
+    const progress = current / duration;
+
+    const startDegree = -75; // начальная градусная метка
+    const endDegree = -15.6; // конечная градусная метка
+    const degreeRange = endDegree - startDegree;
+
+    progressRedRotation.value = startDegree + (degreeRange * progress);
+}
+
 
 </script>
 
@@ -152,7 +176,7 @@ function getDeclension(number) {
         <button class="tech" @click="stopGame">{{ shturval.currentValue }}</button>
 
         <div class="videoposition" :style="`transform: translateX(${heading / 5 * -1}vw);`">
-            <video ref="videoBackground" class="videobackground" muted autoplay playsinline
+            <video ref="videoBackground" @timeupdate="updateProgress" class="videobackground" muted autoplay playsinline
                 src="/video/zamok_lastochkino_gnezdo.mp4" @ended="stopGame"></video>
             <!-- @ended="stopGame" -->
         </div>
@@ -178,6 +202,12 @@ function getDeclension(number) {
                 </div>
             </div>
 
+            <div class="progress-container">
+
+                <img src="/images/progressGray.png" alt="" class="progressGray">
+                <img src="/images/progressRed.png" alt="" class="progressRed" :style="redStyle">
+
+            </div>
 
 
             <div class="landmark-name">{{ props.point.landmark }}</div>
@@ -189,12 +219,41 @@ function getDeclension(number) {
         </Transition>
 
 
+
     </div>
 </template>
 
 
 
 <style scoped>
+.progress-container {
+    position: absolute;
+    top: 450px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999999;
+    width: 3150px;
+    height: 3150px;
+    /* background: rgba(255, 0, 0, 0.126); */
+    clip-path: polygon(21.13% 0, 78.87% 0, 21.13% 100%, 78.87% 100%);
+
+
+}
+
+.progressGray,
+.progressRed {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.progressRed {
+    transform: rotate(-15.7deg);
+    transition: transform .3s;
+}
+
+
+
 .container {
     position: absolute;
     left: 0;
