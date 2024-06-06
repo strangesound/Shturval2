@@ -204,8 +204,8 @@ function updateProgress() {
 
             <div class="progress-container">
 
-                <img src="/images/progressGray.png" alt="" class="progressGray">
-                <img src="/images/progressRed.png" alt="" class="progressRed" :style="redStyle">
+                <img src="/images/progressGray.webp" alt="" class="progressGray">
+                <img src="/images/progressRed.webp" alt="" class="progressRed" :style="redStyle">
 
             </div>
 
@@ -324,7 +324,7 @@ p {
 .course {
     margin-top: 5vw;
     position: absolute;
-    background-image: url('/images/landmarks/ui/kursmain.png');
+    background-image: url('/images/landmarks/ui/kursmain.webp');
     background-repeat: no-repeat;
     z-index: 5;
     width: 1740px;
@@ -335,13 +335,13 @@ p {
 .course-arrow {
     position: absolute;
     margin-top: 7.5vw;
-    background-image: url('/images/landmarks/ui/redArrow.png');
+    background-image: url('/images/landmarks/ui/redArrow.webp');
     background-repeat: no-repeat;
     z-index: 5;
     width: 3480px;
     height: 3480px;
     rotate: 0deg;
-    transition: rotate 2s;
+    transition: rotate 1s;
 
 }
 
@@ -391,7 +391,7 @@ p {
     bottom: 5vw;
     left: 50%;
     transform: translate(-50%);
-    background-image: url('/images/landmarks/ui/bigbtn.png');
+    background-image: url('/images/landmarks/ui/bigbtn.webp');
     background-repeat: no-repeat;
     color: var(--black);
     font-size: 50px;

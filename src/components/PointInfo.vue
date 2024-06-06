@@ -131,7 +131,7 @@ onMounted(() => {
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background-image: url("/images/landmarks/ui/landmark-papier.png");
+  background-image: url("/images/landmarks/ui/landmark-papier.webp");
   z-index: -1;
 
 }
@@ -162,7 +162,7 @@ img {
   width: 23.438vw;
   height: 4.896vw;
   margin-top: 4.896vw;
-  background-image: url("/images/landmarks/ui/kurs.png");
+  background-image: url("/images/landmarks/ui/kurs.webp");
 
 }
 
@@ -181,7 +181,7 @@ img {
   width: 46.51vw;
   height: 46.51vw;
   margin-top: 5vw;
-  background-image: url("/images/landmarks/ui/kursArrow.png");
+  background-image: url("/images/landmarks/ui/kursArrow.webp");
   transform: rotate(-30deg);
   transition: transform 1s ease-in-out;
 }

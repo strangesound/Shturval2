@@ -25,6 +25,6 @@
     color: white;
     font-size: 5vw;
     z-index: 999;
-    background-image: url("/images/screensaver.png");
+    background-image: url("/images/screensaver.webp");
 }
 </style>

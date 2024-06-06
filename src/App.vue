@@ -4,7 +4,7 @@
     <Transition>
       <ScreenSaver v-if="showScreenSaver" />
     </Transition>
-    <img class="map" src="/images/main/map.png" alt="map">
+    <img class="map" src="/images/main/map.webp" alt="map">
     <div v-if="currentPoint && !showGame" :style="pointStyle" class="point">
       <div class="tooltip">{{ currentPoint.landmark }}</div>
     </div>
@@ -143,7 +143,7 @@ const pointStyle = computed(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: url('/images/main/btn.png') no-repeat center center;
+  background: url('/images/main/btn.webp') no-repeat center center;
   width: 21.667vw;
   height: 3.828vw;
   color: black;

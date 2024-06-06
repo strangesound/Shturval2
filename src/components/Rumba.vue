@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img src="/images/main/rumba.png" alt="" class="rumba" :style="rumbaStyle">
+        <img src="/images/main/rumba.webp" alt="" class="rumba" :style="rumbaStyle">
         <img :src="arrowSrc" class="arrow" :class="{ 'show': showArrow, 'hide': !showArrow }">
         <!-- <button @click="showArrow = !showArrow" class="showMe">Click!</button> -->
 
@@ -40,19 +40,19 @@ const rumbaStyle = computed(() => {
 });
 
 
-const arrowSrc = ref(`/images/arrows/${props.point.image.toLowerCase()}_arrow.png`);
+const arrowSrc = ref(`/images/arrows/${props.point.image.toLowerCase()}_arrow.webp`);
 
 watch(() => props.point, (newPoint, oldPoint) => {
     if (oldPoint) {
         showArrow.value = false;
         setTimeout(() => {
-            arrowSrc.value = `/images/arrows/${newPoint.image.toLowerCase()}_arrow.png`;
+            arrowSrc.value = `/images/arrows/${newPoint.image.toLowerCase()}_arrow.webp`;
             setTimeout(() => {
                 showArrow.value = true;
             }, 300); // Время для исчезновения старой стрелки
         }, 300); // Время для исчезновения старой стрелки
     } else {
-        arrowSrc.value = `/images/arrows/${newPoint.image.toLowerCase()}_arrow.png`;
+        arrowSrc.value = `/images/arrows/${newPoint.image.toLowerCase()}_arrow.webp`;
         showArrow.value = true;
     }
 });
