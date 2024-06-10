@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { defineProps, ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const opacityValue = ref(0);
 const degrees = ref(-30);
@@ -90,7 +90,7 @@ onMounted(() => {
   height: 100vh;
   overflow: hidden;
   z-index: 1;
-  background-color: transparent !important;
+  background-color: rgba(0, 0, 0, 0.6) !important;
 }
 
 .background-video {

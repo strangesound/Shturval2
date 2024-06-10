@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 3812.33 3812.33">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-width: 0px;
+      }
+
+      .cls-3 {
+        filter: url(#outer-glow-1);
+        stroke: red;
+        stroke-miterlimit: 10;
+        stroke-width: 6px;
+      }
+
+      .cls-3, .cls-2 {
+        fill: red;
+      }
+    </style>
+    <filter id="outer-glow-1" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur" stdDeviation="3"/>
+      <feFlood flood-color="#ff2a00" flood-opacity="1"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="_Текст_сверху" data-name="Текст сверху">
+    <g>
+      <g>
+        <path class="cls-2" d="m2313.81,411.06c-132.24-35.99-269.45-54.23-407.81-54.23s-275.57,18.24-407.82,54.23c-128.25,34.89-251.74,86.42-367.06,153.13l7,12.13c114.28-66.12,236.65-117.18,363.74-151.75,131.05-35.66,267.02-53.74,404.14-53.74s273.09,18.08,404.14,53.74c127.08,34.57,249.46,85.63,363.73,151.75l7.01-12.12c-115.32-66.72-238.82-118.25-367.07-153.14Z"/>
+        <circle class="cls-3" cx="2678.6" cy="572.35" r="9.4"/>
+      </g>
+      <rect class="cls-1" width="3812.33" height="3812.33"/>
+    </g>
+  </g>
+</svg>

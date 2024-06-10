@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <!-- <div class="last-time">{{ lastInteractionTime }}</div> -->
+    <video class="screenSaverVideo" muted autoplay playsinline src="/video/screenSaver.mp4"></video>
     <Transition>
       <ScreenSaver v-if="showScreenSaver" />
     </Transition>
@@ -123,7 +124,7 @@ const pointStyle = computed(() => {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
 }
 
@@ -159,5 +160,14 @@ const pointStyle = computed(() => {
   font-size: 2vw;
   background-color: black;
   z-index: 99999999999;
+}
+
+.screenSaverVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
 }
 </style>

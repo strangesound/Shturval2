@@ -6,7 +6,6 @@
   
   <script setup>
   import { computed, watch, ref } from 'vue';
-  import { defineProps } from 'vue';
   
   const props = defineProps({
     currentPoint: Object,

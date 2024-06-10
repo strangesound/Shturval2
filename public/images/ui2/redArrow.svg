@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3812.33 3812.33">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #ff3200;
+      }
+    </style>
+  </defs>
+  <g id="_Текст_сверху" data-name="Текст сверху">
+    <polygon class="cls-2" points="1906 179.4 1850.19 310.07 1961.9 310.03 1906 179.4"/>
+    <rect class="cls-1" width="3812.33" height="3812.33"/>
+  </g>
+</svg>

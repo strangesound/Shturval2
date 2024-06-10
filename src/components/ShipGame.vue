@@ -22,6 +22,8 @@ let updateInterval = null;
 const showInfo = ref(false);
 const score = ref(0);
 const gameStopped = ref(false);
+const hideWarning = ref(false);
+
 
 const deviations = {
     count: 0,
@@ -62,6 +64,11 @@ function updateHeading(currentEncoderValue) {
 updateInterval = setInterval(() => {
     updateHeading(shturval.currentValue);
 }, 100);
+
+setTimeout(() => {
+    hideWarning.value = true;
+  }, 5000); // Через 5 секунд установить флаг прозрачности
+
 
 
 function adjustSpeed() {
@@ -144,7 +151,7 @@ function getDeclension(number) {
     return "узлов";
 }
 
-const progressRedRotation = ref(-75); // начальное положение
+const progressRedRotation = ref(-90); // начальное положение
 
 
 const redStyle = computed(() => ({
@@ -161,8 +168,8 @@ function updateProgress() {
     const current = videoBackground.value.currentTime;
     const progress = current / duration;
 
-    const startDegree = -75; // начальная градусная метка
-    const endDegree = -15.6; // конечная градусная метка
+    const startDegree = -60; // начальная градусная метка
+    const endDegree = 0; // конечная градусная метка
     const degreeRange = endDegree - startDegree;
 
     progressRedRotation.value = startDegree + (degreeRange * progress);
@@ -191,28 +198,18 @@ function updateProgress() {
             <div class="course"></div>
             <div class="course-arrow" :style="{ rotate: `${heading}deg` }"></div>
             <div class="course-text-container">
-                <!-- <div class="left-col">
-                    <p class="smalltext">Осталось</p>
-                    <p class="largetext">{{ meters }} м</p>
-                </div> -->
-                <div class="right-col">
-                    <p class="smalltext">Скорость</p>
-                    <p class="largetext">{{ (playbackRate * 20).toFixed() }} {{ getDeclension((playbackRate *
+                <p class="smalltext">Скорость</p>
+                <p class="largetext">{{ (playbackRate * 20).toFixed() }} {{ getDeclension((playbackRate *
             20).toFixed()) }}</p>
-                </div>
             </div>
-
             <div class="progress-container">
-
-                <img src="/images/progressGray.webp" alt="" class="progressGray">
-                <img src="/images/progressRed.webp" alt="" class="progressRed" :style="redStyle">
-
+                <img src="/images/ui2/progressBar.svg" alt="" class="progressRed" :style="redStyle">
             </div>
-
-
             <div class="landmark-name">{{ props.point.landmark }}</div>
         </div>
 
+        <p class="help" :style="{ opacity: hideWarning ? 0 : 1 }">С помощью штурвала удерживайте курс<br>прямо на север, чтобы корабль двигался<br>с максимальной
+            скоростью!</p>
 
         <Transition>
             <PointInfo v-if="showInfo" :point="props.point" :score="score" />
@@ -226,31 +223,45 @@ function updateProgress() {
 
 
 <style scoped>
-.progress-container {
+.help {
     position: absolute;
-    top: 450px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 99999999;
-    width: 3150px;
-    height: 3150px;
-    /* background: rgba(255, 0, 0, 0.126); */
-    clip-path: polygon(21.13% 0, 78.87% 0, 21.13% 100%, 78.87% 100%);
-
-
-}
-
-.progressGray,
-.progressRed {
-    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     top: 0;
     left: 0;
+    /* transform: translate(-50%); */
+    font-size: 120px;
+    line-height: 1.2;
+    width: 100vw;
+    height: 100%;
+    background-color: #00000070;
+    opacity: 1;
+    transition: opacity 1s;
+}
+
+
+.progress-container {
+    clip-path: polygon(21.0% 0, 78.87% 0, 25% 100%, 78.87% 100%);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3812px;
+    height: 3812px;
+    z-index: 9;
+
 }
 
 .progressRed {
-    transform: rotate(-15.7deg);
+    position: absolute;
+    width: 3812px;
+    height: 3812px;
+    transform: rotate(-60deg);
     transition: transform .3s;
+    /* background-color: #8e1f1f43; */
 }
+
 
 
 
@@ -313,44 +324,50 @@ p {
 }
 
 .course-container {
-    width: 100vw;
+    width: 3812px;
+    height: 3812px;
+    position: absolute;
+    top: 0;
+    left: 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     opacity: 1;
-    transform: opacity 1s;
+    transition: opacity 1s;
 }
 
 .course {
-    margin-top: 5vw;
     position: absolute;
-    background-image: url('/images/landmarks/ui/kursmain.webp');
+    background-image: url('/images/ui2/mainBar.svg');
     background-repeat: no-repeat;
     z-index: 5;
-    width: 1740px;
-    height: 551px;
+    width: 3812px;
+    height: 3812px;
 
 }
 
 .course-arrow {
     position: absolute;
-    margin-top: 7.5vw;
-    background-image: url('/images/landmarks/ui/redArrow.webp');
+    background-image: url('/images/ui2/redArrow.svg');
     background-repeat: no-repeat;
     z-index: 5;
-    width: 3480px;
-    height: 3480px;
+    width: 3812px;
+    height: 3812px;
     rotate: 0deg;
     transition: rotate 1s;
 
 }
 
 .course-text-container {
-    position: relative;
+    position: absolute;
     display: grid;
     grid-template-columns: 1fr;
     /* gap: 0vw; */
-    margin-top: 14.3vw;
+    /* margin-top: 14.3vw; */
+    top: 12vw;
+    transform: translateX(-50%);
+    left: 50%;
 }
 
 .smalltext {
@@ -361,10 +378,6 @@ p {
 .largetext {
     font-size: 110px;
     font-weight: 700;
-}
-
-.right-col {
-    margin-left: 2vw;
 }
 
 .gradient {
