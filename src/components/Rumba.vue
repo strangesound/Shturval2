@@ -2,8 +2,6 @@
     <div>
         <img src="/images/main/rumba.webp" alt="" class="rumba" :style="rumbaStyle">
         <img :src="arrowSrc" class="arrow" :class="{ 'show': showArrow, 'hide': !showArrow }">
-        <!-- <button @click="showArrow = !showArrow" class="showMe">Click!</button> -->
-
     </div>
 </template>
 
@@ -34,25 +32,26 @@ const rumbaStyle = computed(() => {
     // console.log('angleInDegrees', angleInDegrees);
 
     return {
-        transform: `rotate(${(angleInDegrees + 90) % 360}deg)`
+        // transform: `rotate(${(angleInDegrees + 90) % 360}deg)`
+        transform: `rotate(${props.point.angle}deg)`
     };
 
 });
 
 
-const arrowSrc = ref(`/images/arrows/${props.point.image.toLowerCase()}_arrow.webp`);
+const arrowSrc = ref(`/images/arrows/${props.point.image.toLowerCase()}.svg`);
 
 watch(() => props.point, (newPoint, oldPoint) => {
     if (oldPoint) {
         showArrow.value = false;
         setTimeout(() => {
-            arrowSrc.value = `/images/arrows/${newPoint.image.toLowerCase()}_arrow.webp`;
+            arrowSrc.value = `/images/arrows/${newPoint.image.toLowerCase()}.svg`;
             setTimeout(() => {
                 showArrow.value = true;
             }, 300); // Время для исчезновения старой стрелки
         }, 300); // Время для исчезновения старой стрелки
     } else {
-        arrowSrc.value = `/images/arrows/${newPoint.image.toLowerCase()}_arrow.webp`;
+        arrowSrc.value = `/images/arrows/${newPoint.image.toLowerCase()}.svg`;
         showArrow.value = true;
     }
 });
@@ -75,7 +74,7 @@ watch(() => props.point, (newPoint, oldPoint) => {
     left: 527px;
     top: 1102px;
 
-    transition: transform 3s ease;
+    transition: transform 1s ease-in;
     /* Плавный переход для поворота */
 }
 
@@ -88,7 +87,7 @@ watch(() => props.point, (newPoint, oldPoint) => {
     opacity: 0;
     clip-path: circle(0% at 800px 1370px);
     /* Центр румбы */
-    transition: opacity 0.3s ease-in-out, clip-path 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in, clip-path 0.3s ease-in;
     /* background-color: #007bff6b; */
 }
 

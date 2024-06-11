@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3840 2160">
+  <defs>
+    <style>
+      .cls-1 {
+        mix-blend-mode: multiply;
+      }
+
+      .cls-2 {
+        isolation: isolate;
+      }
+
+      .cls-3 {
+        fill: #64370e;
+        stroke-width: 0px;
+      }
+
+      .cls-4 {
+        fill: none;
+        stroke: #64370e;
+        stroke-dasharray: 0 0 20 30;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+        stroke-width: 11px;
+      }
+    </style>
+  </defs>
+  <g class="cls-2">
+    <g id="_Стрелка" data-name="Стрелка">
+      <g class="cls-1">
+        <g>
+          <path class="cls-4" d="m1069.77,1488.41c138.65,87.4,28.7,339.84,361.38,273.83"/>
+          <polygon class="cls-3" points="1418.22 1789.89 1423.15 1763.8 1407.79 1742.14 1469.61 1753.66 1418.22 1789.89"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

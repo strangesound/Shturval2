@@ -1,28 +1,27 @@
 <template>
   <div class="wrapper">
-    <!-- <div class="last-time">{{ lastInteractionTime }}</div> -->
-    <video class="screenSaverVideo" muted autoplay playsinline src="/video/screenSaver.mp4"></video>
-    <Transition>
-      <ScreenSaver v-if="showScreenSaver" />
-    </Transition>
-    <img class="map" src="/images/main/map.webp" alt="map">
-    <div v-if="currentPoint && !showGame" :style="pointStyle" class="point">
-      <div class="tooltip">{{ currentPoint.landmark }}</div>
+    <video ref="screenSaverVideo" class="screenSaverVideo" muted loop autoplay playsinline
+      src="/video/screenSaver.mp4"></video>
+    <ScreenSaver v-if="showScreenSaver" />
+    <div class="map-container" v-if="!showScreenSaver">
+      <img class="map" src="/images/main/map.webp" alt="map">
+      <div v-if="currentPoint && !showGame" :style="pointStyle" class="point">
+        <div class="tooltip">{{ currentPoint.landmark }}</div>
+      </div>
+      <Rumba :point="currentPoint" />
     </div>
     <Transition>
       <ShipGame v-if="showGame" :point="currentPoint" />
     </Transition>
 
-    <Rumba :point="currentPoint" />
   </div>
 </template>
 
 <script setup>
 import { ref, watch, computed } from 'vue';
 import shturval from '@/store';
-import points from '@/assets/json/points.json'; // Импорт JSON файла
+import points from '@/assets/json/points.json';
 import ScreenSaver from '@/components/ScreenSaver.vue';
-import PointInfo from '@/components/PointInfo.vue';
 import Rumba from '@/components/Rumba.vue';
 import ShipGame from '@/components/ShipGame.vue';
 import { states, currentState, setState } from '@/states'; // Импортируем константы и функцию
@@ -31,11 +30,24 @@ const currentPointIndex = ref(0);
 const showGame = ref(false);
 const showScreenSaver = ref(false);
 const currentPoint = computed(() => points[currentPointIndex.value]);
-let lastInteractionTime = Date.now();
-let interactionBlocked = false;
-let showGameTimeout
 
-setState(states.MAP)
+let showGameTimeout
+let idleTimer;
+
+
+const screenSaverVideo = ref(null);
+
+function resetIdleTimer() {
+  clearTimeout(idleTimer);
+  console.log('Timer reset at:', new Date().toISOString());
+
+  idleTimer = setTimeout(() => {
+    setState(states.SCREENSAVER);
+    clearTimeout(showGameTimeout);
+    showScreenSaver.value = true;
+    showGame.value = false;
+  }, 90000);
+}
 
 
 function enterPointInfo() {
@@ -47,7 +59,7 @@ function enterPointInfo() {
 
 // Обработка изменения текущего значения штурвала
 watch(() => shturval.currentValue, (newValue, oldValue) => {
-  lastInteractionTime = Date.now();
+  resetIdleTimer();
   const difference = newValue - oldValue;
 
   switch (currentState.value) {
@@ -57,12 +69,12 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
       if (difference > 10) {
         currentPointIndex.value = (currentPointIndex.value + 1) % points.length;
         clearTimeout(showGameTimeout)
-        showGameTimeout = setTimeout(enterPointInfo, 3000);
+        showGameTimeout = setTimeout(enterPointInfo, 5000);
 
       } else if (difference < -10) {
         currentPointIndex.value = (currentPointIndex.value - 1 + points.length) % points.length;
         clearTimeout(showGameTimeout)
-        showGameTimeout = setTimeout(enterPointInfo, 3000);
+        showGameTimeout = setTimeout(enterPointInfo, 5000);
       }
       break;
 
@@ -70,35 +82,23 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
       break;
 
     case states.SCREENSAVER:
-
-      clearTimeout(showGameTimeout)
-      showGame.value = false
-      if (!showScreenSaver.value) {
-        showScreenSaver.value = true
-      }
-
       if (difference > 10 || difference < -10) {
         setState(states.MAP);
       }
-      break;
   }
 });
 
 
-// Включение скринсейвера через 20 секунд бездействия
-setInterval(() => {
-  if (Date.now() - lastInteractionTime > 600000 && currentState.value !== states.SCREENSAVER) {
-    console.log('setInterval hello');
-    console.log('Date.now()', Date.now());
-    console.log('lastInteractionTime', lastInteractionTime);
-    console.log('currentState.value', currentState.value);
-    setState(states.SCREENSAVER)
-    showScreenSaver.value = true;
-    showGame.value = false;
 
+watch(showGame, (newValue) => {
+  if (screenSaverVideo.value) {
+    if (newValue === true) {
+      screenSaverVideo.value.pause();
+    } else {
+      screenSaverVideo.value.play();
+    }
   }
-}, 1000);
-
+});
 
 
 
@@ -137,6 +137,7 @@ const pointStyle = computed(() => {
 .point {
   position: absolute;
   transform: translate(-50%, -50%);
+  z-index: 2;
 }
 
 .tooltip {

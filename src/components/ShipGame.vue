@@ -2,7 +2,6 @@
 import { ref, computed, watch } from 'vue';
 import shturval from '@/store';
 import PointInfo from '@/components/PointInfo.vue';
-import points from '@/assets/json/points.json'; // Импорт JSON файла
 import { states, currentState, setState } from '@/states'; // Импортируем константы и функцию
 
 const props = defineProps({
@@ -63,7 +62,7 @@ function updateHeading(currentEncoderValue) {
 // Запуск функции обновления каждые 100 мс
 updateInterval = setInterval(() => {
     updateHeading(shturval.currentValue);
-}, 100);
+}, 200);
 
 setTimeout(() => {
     hideWarning.value = true;
@@ -401,7 +400,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    bottom: 5vw;
+    top: 85vh;
     left: 50%;
     transform: translate(-50%);
     background-image: url('/images/landmarks/ui/bigbtn.webp');
