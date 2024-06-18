@@ -8,7 +8,7 @@ const props = defineProps({
     point: Object
 });
 
-// console.log(props.point);
+console.log(props.point.image);
 
 const heading = ref(0); // Направление в градусах
 const speed = ref(60);  // Скорость кадров в секунду
@@ -183,11 +183,11 @@ function updateProgress() {
 
         <div class="videoposition" :style="`transform: translateX(${heading / 5 * -1}vw);`">
             <video ref="videoBackground" @timeupdate="updateProgress" class="videobackground" muted autoplay playsinline
-                src="/video/zamok_lastochkino_gnezdo.mp4" @ended="stopGame"></video>
+                :src="`/video/${props.point.image}.mp4`" @ended="stopGame"></video>
             <!-- @ended="stopGame" -->
         </div>
         <div class="ship-position" :style="`transform: translateX(${heading / 20 * 1}vw);`">
-            <video ref="videoShip" class="ship" muted loop autoplay playsinline src="/video/shipAlpha.webm"></video>
+            <video ref="videoShip" class="ship" muted loop autoplay playsinline :src="`/video/${props.point.image}_ship.webm`"></video>
         </div>
 
         <div class="gradient"></div>
