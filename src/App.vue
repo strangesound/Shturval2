@@ -1,15 +1,19 @@
 <template>
   <div class="wrapper">
-    <video ref="screenSaverVideo" class="screenSaverVideo" muted loop autoplay playsinline
-      src="/video/screenSaver.mp4"></video>
-    <ScreenSaver v-if="showScreenSaver" />
-    <div class="map-container" v-if="!showScreenSaver">
-      <img class="map" src="/images/main/map.webp" alt="map">
-      <div v-if="currentPoint && !showGame" :style="pointStyle" class="point">
-        <div class="tooltip">{{ currentPoint.landmark }}</div>
-      </div>
-      <Rumba :point="currentPoint" />
+
+    <div class="tech tech-buttons">
+      <button @click="switchToScreensaver" class="set-screensaver">set-screensaver</button>
+      <button @click="switchToMap" class="set-map">set-map</button>
     </div>
+
+    <Transition>
+      <ScreenSaver v-if="showScreenSaver" />
+    </Transition>
+
+    <Transition>
+      <Map v-if="!showScreenSaver" :point="currentPoint" :showGame="showGame" />
+    </Transition>
+
     <Transition>
       <ShipGame v-if="showGame" :point="currentPoint" />
     </Transition>
@@ -22,7 +26,8 @@ import { ref, watch, computed } from 'vue';
 import shturval from '@/store';
 import points from '@/assets/json/points.json';
 import ScreenSaver from '@/components/ScreenSaver.vue';
-import Rumba from '@/components/Rumba.vue';
+import Map from '@/components/Map.vue';
+
 import ShipGame from '@/components/ShipGame.vue';
 import { states, currentState, setState } from '@/states'; // Импортируем константы и функцию
 
@@ -35,7 +40,6 @@ let showGameTimeout
 let idleTimer;
 
 
-const screenSaverVideo = ref(null);
 
 function resetIdleTimer() {
   clearTimeout(idleTimer);
@@ -69,12 +73,12 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
       if (difference > 10) {
         currentPointIndex.value = (currentPointIndex.value + 1) % points.length;
         clearTimeout(showGameTimeout)
-        showGameTimeout = setTimeout(enterPointInfo, 5000);
+        showGameTimeout = setTimeout(enterPointInfo, 3000);
 
       } else if (difference < -10) {
         currentPointIndex.value = (currentPointIndex.value - 1 + points.length) % points.length;
         clearTimeout(showGameTimeout)
-        showGameTimeout = setTimeout(enterPointInfo, 5000);
+        showGameTimeout = setTimeout(enterPointInfo, 3000);
       }
       break;
 
@@ -88,30 +92,25 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
   }
 });
 
+// Only for test!!!
+
+function switchToMap() {
+  setState(states.MAP);
+  showGame.value = false;
+  showScreenSaver.value = false;
+  console.log('Switched to MAP state');
+}
+
+function switchToScreensaver() {
+  setState(states.SCREENSAVER);
+  showGame.value = false;
+  showScreenSaver.value = true;
+  console.log('Switched to SCREENSAVER state');
+}
 
 
-watch(showGame, (newValue) => {
-  if (screenSaverVideo.value) {
-    if (newValue === true) {
-      screenSaverVideo.value.pause();
-    } else {
-      screenSaverVideo.value.play();
-    }
-  }
-});
 
 
-
-const pointStyle = computed(() => {
-  if (!currentPoint.value) return {};
-  return {
-    position: 'absolute',
-    left: `${currentPoint.value.x}px`,
-    top: `${currentPoint.value.y}px`,
-    transform: 'translate(-50%, -130%)',
-    textAlign: 'center',
-  };
-});
 </script>
 
 <style scoped>
@@ -128,10 +127,26 @@ const pointStyle = computed(() => {
   color: white;
 }
 
-.map {
+.map-container {
+  position: absolute;
   width: 100vw;
   height: 100vh;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity .3s;
+
+
+}
+
+.map {
+  width: 110vw;
+  height: 110vh;
   object-fit: cover;
+  position: absolute;
+  top: -5vh;
+  left: -5vw;
 }
 
 .point {
@@ -163,12 +178,20 @@ const pointStyle = computed(() => {
   z-index: 99999999999;
 }
 
-.screenSaverVideo {
+
+
+.tech-buttons {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
+  z-index: 999999;
+}
+
+.tech-buttons>button {
+  font-size: 1vw;
+  width: 100%;
+  margin: .3vw;
+  padding: .3vw;
+  opacity: .5;
 }
 </style>

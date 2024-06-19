@@ -1,6 +1,7 @@
 <template>
     <div>
         <img src="/images/main/rumba.webp" alt="" class="rumba" :style="rumbaStyle">
+        <img src="/images/rumbaShip.png" alt="" class="rumbaShip">
         <img :src="arrowSrc" class="arrow" :class="{ 'show': showArrow, 'hide': !showArrow }">
     </div>
 </template>
@@ -17,26 +18,22 @@ const showArrow = ref(false);
 
 
 
-const centerX = 800; // Центр румбы по оси X
-const centerY = 1370; // Центр румбы по оси Y
+// const centerX = 800; // Центр румбы по оси X
+// const centerY = 1370; // Центр румбы по оси Y
 
 
 const rumbaStyle = computed(() => {
-    //   if (!props.currentPoint) return {};
-
-    const targetX = props.point.x;
-    const targetY = props.point.y;
-    const deltaX = targetX - centerX;
-    const deltaY = targetY - centerY;
-    const angleInRadians = Math.atan2(deltaY, deltaX);
-    const angleInDegrees = angleInRadians * (180 / Math.PI);
+    // const targetX = props.point.x;
+    // const targetY = props.point.y;
+    // const deltaX = targetX - centerX;
+    // const deltaY = targetY - centerY;
+    // const angleInRadians = Math.atan2(deltaY, deltaX);
+    // const angleInDegrees = angleInRadians * (180 / Math.PI);
     // console.log('angleInDegrees', angleInDegrees);
-
     return {
         // transform: `rotate(${(angleInDegrees + 90) % 360}deg)`
         transform: `rotate(${props.point.angle}deg)`
     };
-
 });
 
 
@@ -76,7 +73,15 @@ watch(() => props.point, (newPoint, oldPoint) => {
     top: 1102px;
 
     transition: transform 1s ease-in;
-    /* Плавный переход для поворота */
+}
+
+.rumbaShip {
+    position: absolute;
+    left: 699px;
+    top: 1281px;
+    /* left: 800px;
+    top: 1370px;
+    transform: translate(-50%, -50%); */
 }
 
 .arrow {

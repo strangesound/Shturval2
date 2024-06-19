@@ -11,8 +11,6 @@ const props = defineProps({
 console.log(props.point.image);
 
 const heading = ref(0); // Направление в градусах
-const speed = ref(60);  // Скорость кадров в секунду
-const maxDeviation = 15; // Максимальное отклонение фона в процентах
 const videoBackground = ref(null);
 const videoShip = ref(null);
 const playbackRate = ref(1)
@@ -28,8 +26,6 @@ const deviations = {
     count: 0,
     totalDeviation: 0
 };
-
-
 
 let lastEncoderValue = 0;  // Переменная для хранения последнего значения энкодера
 
@@ -66,7 +62,7 @@ updateInterval = setInterval(() => {
 
 setTimeout(() => {
     hideWarning.value = true;
-  }, 5000); // Через 5 секунд установить флаг прозрачности
+  }, 3000); // Через 5 секунд установить флаг прозрачности
 
 
 
@@ -109,7 +105,7 @@ function calculateScore() {
 function stopGame() {
     clearInterval(updateInterval);
     score.value = calculateScore();
-    console.log(`Игра окончена! Ваши баллы: ${score.value}`);
+    // console.log(`Игра окончена! Ваши баллы: ${score.value}`);
     showInfo.value = true;
 
     setTimeout(() => {
@@ -179,7 +175,7 @@ function updateProgress() {
 
 <template>
     <div class="container">
-        <button class="tech" @click="stopGame">{{ shturval.currentValue }}</button>
+        <button class="tech" @click="stopGame">Остановить игру {{ shturval.currentValue }}</button>
 
         <div class="videoposition" :style="`transform: translateX(${heading / 5 * -1}vw);`">
             <video ref="videoBackground" @timeupdate="updateProgress" class="videobackground" muted autoplay playsinline
@@ -198,8 +194,8 @@ function updateProgress() {
             <div class="course-arrow" :style="{ rotate: `${heading}deg` }"></div>
             <div class="course-text-container">
                 <p class="smalltext">Скорость</p>
-                <p class="largetext">{{ (playbackRate * 20).toFixed() }} {{ getDeclension((playbackRate *
-            20).toFixed()) }}</p>
+                <p class="largetext">{{ (playbackRate * 6).toFixed() }} {{ getDeclension((playbackRate *
+            6).toFixed()) }}</p>
             </div>
             <div class="progress-container">
                 <img src="/images/ui2/progressBar.svg" alt="" class="progressRed" :style="redStyle">

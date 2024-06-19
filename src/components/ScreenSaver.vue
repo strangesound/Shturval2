@@ -1,9 +1,11 @@
 <template>
     <div class="wrapper">
-        <h1 class="">УПРАВЛЯЙ КОРАБЛЕМ</h1>
-        <h2>НАЧНИ ВРАЩАТЬ ШТУРВАЛ, ЧТОБЫ ВЫБРАТЬ ЛОКАЦИЮ</h2>
+                <video class="back" muted loop autoplay playsinline src="/video/zamok_lastochkino_gnezdo.mp4"></video>
+        <video class="ship" muted loop autoplay playsinline src="/video/zamok_lastochkino_gnezdo_ship.webm"></video>
 
-    </div>
+        <img src="/images/screenSaverText.webp" alt="" class="header-img">
+
+</div>
 </template>
 
 <script setup>
@@ -26,5 +28,20 @@
     font-size: 5vw;
     z-index: 999;
     background-image: url("/images/screensaver.webp");
+}
+
+.header-img{
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.ship,
+.back {
+    position: absolute;
+    height: 100vh;
+    width: 200vw;
+    left: -50vw;
+    top: 0;
 }
 </style>

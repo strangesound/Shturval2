@@ -1,10 +1,11 @@
 <template>
   <div class="container">
     <div class="point-info">
-      <img class="landmark-img" :src="`./images/landmarks/${point.image.toLowerCase()}.jpg`">
-      <div class="svitok"></div>
+      <img class="landmark-img" :src="`./images/landmarks/${point.image.toLowerCase()}.png`" :style="{ opacity: opacityValue }">
+      <!-- <div class="svitok"></div> -->
+      <video ref="mapVideo" src="/video_small_size/pointUnfold.webm" muted playsinline autoplay class="svitok"></video>
 
-      <div class="all-text">
+      <div class="all-text" :style="{ opacity: opacityValue }">
         <h1>{{ point.landmark }}</h1>
         <h2>• {{ point.city }} •</h2>
         <p>{{ point.description }}</p>
@@ -72,7 +73,7 @@ onMounted(() => {
   setTimeout(() => {
     opacityValue.value = 1;
     degrees.value = scoreToDegrees(props.score)
-  }, 200); // Изменение opacity через 2 секунды
+  }, 1000); // Изменение opacity через 2 секунды
 });
 
 
@@ -131,7 +132,7 @@ onMounted(() => {
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background-image: url("/images/landmarks/ui/landmark-papier.webp");
+  /* mask-image: url("/images/landmarks/ui/mask.webp"); */
   z-index: -1;
 
 }
@@ -151,10 +152,20 @@ img {
   width: 23vw;
   height: 15vw;
   position: absolute;
-  left: 36.458vw;
+  left: 50vw;
+  transform: translateX(-50%);
   top: 4.2vw;
   object-fit: fill;
-  z-index: -2;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 2s ease;
+
+}
+
+.all-text{
+  opacity: 0;
+  transition: opacity 2.1s ease;
+
 }
 
 .course {
