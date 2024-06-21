@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
                 <video class="back" muted loop autoplay playsinline src="/video/zamok_lastochkino_gnezdo.mp4"></video>
-        <video class="ship" muted loop autoplay playsinline src="/video/zamok_lastochkino_gnezdo_ship.webm"></video>
+        <video class="ship" muted loop autoplay playsinline src="/video/zamok_lastochkino_gnezdo.webm"></video>
 
         <img src="/images/screenSaverText.webp" alt="" class="header-img">
 
@@ -27,6 +27,7 @@
     color: white;
     font-size: 5vw;
     z-index: 999;
+    overflow: hidden;
     background-image: url("/images/screensaver.webp");
 }
 

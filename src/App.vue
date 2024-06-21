@@ -29,7 +29,7 @@ import ScreenSaver from '@/components/ScreenSaver.vue';
 import Map from '@/components/Map.vue';
 
 import ShipGame from '@/components/ShipGame.vue';
-import { states, currentState, setState } from '@/states'; // Импортируем константы и функцию
+import { states, currentState, setState, isInteractionBlocked } from '@/states';
 
 const currentPointIndex = ref(0);
 const showGame = ref(false);
@@ -43,7 +43,7 @@ let idleTimer;
 
 function resetIdleTimer() {
   clearTimeout(idleTimer);
-  console.log('Timer reset at:', new Date().toISOString());
+  // console.log('Timer reset at:', new Date().toISOString());
 
   idleTimer = setTimeout(() => {
     setState(states.SCREENSAVER);
@@ -66,19 +66,27 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
   resetIdleTimer();
   const difference = newValue - oldValue;
 
+
+
+
   switch (currentState.value) {
     case states.MAP:
       showGame.value = false
       showScreenSaver.value = false
+
+      if (isInteractionBlocked()) {
+        return;
+      }
+
       if (difference > 10) {
         currentPointIndex.value = (currentPointIndex.value + 1) % points.length;
         clearTimeout(showGameTimeout)
-        showGameTimeout = setTimeout(enterPointInfo, 3000);
+        showGameTimeout = setTimeout(enterPointInfo, 3500);
 
       } else if (difference < -10) {
         currentPointIndex.value = (currentPointIndex.value - 1 + points.length) % points.length;
         clearTimeout(showGameTimeout)
-        showGameTimeout = setTimeout(enterPointInfo, 3000);
+        showGameTimeout = setTimeout(enterPointInfo, 3500);
       }
       break;
 
@@ -103,6 +111,7 @@ function switchToMap() {
 
 function switchToScreensaver() {
   setState(states.SCREENSAVER);
+  clearTimeout(showGameTimeout)
   showGame.value = false;
   showScreenSaver.value = true;
   console.log('Switched to SCREENSAVER state');

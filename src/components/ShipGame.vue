@@ -183,7 +183,7 @@ function updateProgress() {
             <!-- @ended="stopGame" -->
         </div>
         <div class="ship-position" :style="`transform: translateX(${heading / 20 * 1}vw);`">
-            <video ref="videoShip" class="ship" muted loop autoplay playsinline :src="`/video/${props.point.image}_ship.webm`"></video>
+            <video ref="videoShip" class="ship" muted loop autoplay playsinline :src="`/video/${props.point.image}.webm`"></video>
         </div>
 
         <div class="gradient"></div>
@@ -203,8 +203,7 @@ function updateProgress() {
             <div class="landmark-name">{{ props.point.landmark }}</div>
         </div>
 
-        <p class="help" :style="{ opacity: hideWarning ? 0 : 1 }">С помощью штурвала удерживайте курс<br>прямо на север, чтобы корабль двигался<br>с максимальной
-            скоростью!</p>
+        <p class="help" :style="{ opacity: hideWarning ? 0 : 1 }">С помощью штурвала удерживайте курс прямо,<br>чтобы корабль двигался с максимальной скоростью!</p>
 
         <Transition>
             <PointInfo v-if="showInfo" :point="props.point" :score="score" />

@@ -13,7 +13,7 @@ socket.on('connect', () => {
 
 socket.on('modbus-data', (data) => {
   shturval.currentValue = data;
-  console.log('Received modbus-data:', data);
+  console.log('modbus:', data);
 });
 
 socket.on("disconnect", (reason, details) => {

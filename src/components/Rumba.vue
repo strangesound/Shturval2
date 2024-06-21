@@ -37,9 +37,31 @@ const rumbaStyle = computed(() => {
 });
 
 
+function setArrowAnimation() {
+    console.log('props.point.animationClipPath', props.point.animationClipPath);
+  const keyframes = `
+    @keyframes expandClipPath {
+      0% {
+        clip-path: circle(7% at 800px 1370px);
+      }
+      100% {
+        clip-path: circle(${props.point.animationClipPath || '75'}% at 800px 1370px);
+      }
+    }
+  `;
+
+  const styleSheet = document.createElement('style');
+  styleSheet.type = 'text/css';
+  styleSheet.innerText = keyframes;
+  document.head.appendChild(styleSheet);
+}
+
+
+
 const arrowSrc = ref(`/images/arrows/${props.point.image.toLowerCase()}.svg`);
 
 watch(() => props.point, (newPoint, oldPoint) => {
+    setArrowAnimation();
     if (oldPoint) {
         showArrow.value = false;
         setTimeout(() => {
@@ -99,7 +121,8 @@ watch(() => props.point, (newPoint, oldPoint) => {
 
 .arrow.show {
     opacity: 1;
-    animation: expandClipPath 5s forwards;
+    animation: expandClipPath 3s forwards;
+    /* background-color: #007bff46; */
     /* Анимация для расширения clip-path */
 }
 
@@ -109,15 +132,15 @@ watch(() => props.point, (newPoint, oldPoint) => {
     /* Центр румбы */
 }
 
-@keyframes expandClipPath {
+/* @keyframes expandClipPath {
     0% {
         clip-path: circle(7% at 800px 1370px);
     }
 
     100% {
-        clip-path: circle(100% at 800px 1370px);
+        clip-path: circle(16% at 800px 1370px);
     }
-}
+} */
 
 .showMe {
     position: absolute;

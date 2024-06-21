@@ -6,7 +6,8 @@
     "x": 724,
     "y": 829,
     "image": "potyomkinskaya_lestnica",
-    "angle": 4
+    "angle": 4,
+    "animationClipPath": 16
   },
   {
     "city": "ОЧАКОВ",
@@ -15,7 +16,8 @@
     "x": 968,
     "y": 768,
     "image": "pamyatnik_a_v_suvorovu",
-    "angle": 22
+    "angle": 22,
+    "animationClipPath": 17
   },
   {
     "city": "СЕВАСТОПОЛЬ",
@@ -24,7 +26,8 @@
     "x": 1589,
     "y": 1700,
     "image": "pamyatnik_zatonuvshim_korablyam",
-    "angle": 112
+    "angle": 112,
+    "animationClipPath": 25
   },
   {
     "city": "СЕВАСТОПОЛЬ",
@@ -33,7 +36,8 @@
     "x": 1550,
     "y": 1750,
     "image": "khersones_tavricheskiy",
-    "angle": 112
+    "angle": 112,
+    "animationClipPath": 26
   },
   {
     "city": "АЛУПКА",
@@ -42,7 +46,8 @@
     "x": 1700,
     "y": 1760,
     "image": "vorontsovskiy_dvorec",
-    "angle": 130
+    "angle": 130,
+    "animationClipPath": 26
   },
   {
     "city": "ГАСПРА",
@@ -51,7 +56,8 @@
     "x": 1683,
     "y": 1791,
     "image": "zamok_lastochkino_gnezdo",
-    "angle": 148
+    "angle": 148,
+    "animationClipPath": 32
   },
   {
     "city": "ЛИВАДИЯ",
@@ -60,7 +66,8 @@
     "x": 1727,
     "y": 1791,
     "image": "livadiyskiy_dvorec",
-    "angle": 166
+    "angle": 166,
+    "animationClipPath": 35
   },
   {
     "city": "ФЕОДОСИЯ",
@@ -69,7 +76,8 @@
     "x": 2189,
     "y": 1517,
     "image": "genuezskaya_krepost",
-    "angle": 157
+    "angle": 157,
+    "animationClipPath": 46
   },
   {
     "city": "КЕРЧЬ",
@@ -78,7 +86,8 @@
     "x": 2558,
     "y": 1400,
     "image": "krymskiy_most",
-    "angle": 139
+    "angle": 139,
+    "animationClipPath": 57
   },
   {
     "city": "МАРИУПОЛЬ",
@@ -87,6 +96,7 @@
     "x": 2845,
     "y": 563,
     "image": "belosarayskiy_mayak",
-    "angle": 94
+    "angle": 94,
+    "animationClipPath": 71
   }
 ]
