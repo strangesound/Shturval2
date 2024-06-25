@@ -2,7 +2,7 @@
     <div class="map-container">
         <!-- <img src="/images/sea.jpg" alt="" class="mapBackVideo"> -->
         <video ref="mapBackVideo" class="mapBackVideo" muted loop autoplay playsinline
-            src="/video/screenSaver.mp4"></video>
+            src="/video/screenSaver-loop.mp4"></video>
         <video ref="mapVideo" src="/video_small_size/mainMapUnfold.webm" muted playsinline autoplay class="map"></video>
 
         <div ref="mapAdditionalInfo" class="container-timeout">

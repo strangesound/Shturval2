@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import shturval from '@/store';
 import PointInfo from '@/components/PointInfo.vue';
 import { states, currentState, setState } from '@/states'; // Импортируем константы и функцию
@@ -62,7 +62,7 @@ updateInterval = setInterval(() => {
 
 setTimeout(() => {
     hideWarning.value = true;
-  }, 3000); // Через 5 секунд установить флаг прозрачности
+}, 4000); // Через 5 секунд установить флаг прозрачности
 
 
 
@@ -170,6 +170,14 @@ function updateProgress() {
     progressRedRotation.value = startDegree + (degreeRange * progress);
 }
 
+const opacityValue = ref(0);
+onMounted(() => {
+
+    setTimeout(() => {
+        opacityValue.value = 1;
+    }, 1000);
+});
+
 
 </script>
 
@@ -179,16 +187,17 @@ function updateProgress() {
 
         <div class="videoposition" :style="`transform: translateX(${heading / 5 * -1}vw);`">
             <video ref="videoBackground" @timeupdate="updateProgress" class="videobackground" muted autoplay playsinline
-                :src="`/video/${props.point.image}.mp4`" @ended="stopGame"></video>
+                :src="`/video/${props.point.image}.mp4`"  @ended="stopGame"></video>
             <!-- @ended="stopGame" -->
         </div>
         <div class="ship-position" :style="`transform: translateX(${heading / 20 * 1}vw);`">
-            <video ref="videoShip" class="ship" muted loop autoplay playsinline :src="`/video/${props.point.image}.webm`"></video>
+            <video ref="videoShip" class="ship" muted loop autoplay playsinline
+                :src="`/video/${props.point.image}.webm`"></video>
         </div>
 
         <div class="gradient"></div>
 
-        <div class="course-container" :style="{ opacity: showInfo ? 0 : 1 }">
+        <div class="course-container" :style="{ opacity: showInfo || !hideWarning ? 0 : 1 }">
 
             <div class="course"></div>
             <div class="course-arrow" :style="{ rotate: `${heading}deg` }"></div>
@@ -203,7 +212,13 @@ function updateProgress() {
             <div class="landmark-name">{{ props.point.landmark }}</div>
         </div>
 
-        <p class="help" :style="{ opacity: hideWarning ? 0 : 1 }">С помощью штурвала удерживайте курс прямо,<br>чтобы корабль двигался с максимальной скоростью!</p>
+        <div class="help" :style="{ opacity: hideWarning ? 0 : 1 }">
+            <video ref="mapVideo" src="/video_small_size/pointUnfold.webm" muted playsinline autoplay
+                class="svitok"></video>
+            <p class="help-text" :style="{ opacity: opacityValue }">С помощью штурвала удерживайте курс
+                прямо,<br>чтобы корабль двигался с максимальной скоростью!</p>
+        </div>
+
 
         <Transition>
             <PointInfo v-if="showInfo" :point="props.point" :score="score" />
@@ -232,8 +247,28 @@ function updateProgress() {
     background-color: #00000070;
     opacity: 1;
     transition: opacity 1s;
+    z-index: 100000000;
 }
 
+.help-text {
+    position: absolute;
+    width: 40vw;
+    font-size: 3vw;
+    color: #301904;
+    opacity: 0;
+    transition: opacity 1s;
+    /* mix-blend-mode: multiply; */
+}
+
+.help>video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 70vh;
+    margin-top: 13vh;
+    object-fit: fill;
+}
 
 .progress-container {
     clip-path: polygon(21.0% 0, 78.87% 0, 25% 100%, 78.87% 100%);
