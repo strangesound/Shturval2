@@ -53,8 +53,14 @@ function resetIdleTimer() {
   }, 90000);
 }
 
+const routeBellArrowEnd = new Audio('/sounds/route-bell-arrow-end.wav');
+
+
 
 function enterPointInfo() {
+  routeBellArrowEnd.currentTime = 0; // Сбросить время воспроизведения
+  routeBellArrowEnd.play();
+
   setState(states.POINT_INFO);
   showGame.value = true;
 

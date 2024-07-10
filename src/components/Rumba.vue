@@ -39,7 +39,7 @@ const rumbaStyle = computed(() => {
 
 function setArrowAnimation() {
     console.log('props.point.animationClipPath', props.point.animationClipPath);
-  const keyframes = `
+    const keyframes = `
     @keyframes expandClipPath {
       0% {
         clip-path: circle(7% at 800px 1370px);
@@ -50,17 +50,30 @@ function setArrowAnimation() {
     }
   `;
 
-  const styleSheet = document.createElement('style');
-  styleSheet.type = 'text/css';
-  styleSheet.innerText = keyframes;
-  document.head.appendChild(styleSheet);
+    const styleSheet = document.createElement('style');
+    styleSheet.type = 'text/css';
+    styleSheet.innerText = keyframes;
+    document.head.appendChild(styleSheet);
 }
 
+const routeBellArrowStart = new Audio('/sounds/route-bell-arrow-start.wav');
+// const routeBellArrowEnd = new Audio('/sounds/route-bell-arrow-end.wav');
 
+const playSound = () => {
+    routeBellArrowStart.currentTime = 0; // Сбросить время воспроизведения
+    routeBellArrowStart.volume = 0.5;
+    routeBellArrowStart.play();
+};
 
 const arrowSrc = ref(`/images/arrows/${props.point.image.toLowerCase()}.svg`);
 
+
 watch(() => props.point, (newPoint, oldPoint) => {
+
+
+
+    playSound()
+
     setArrowAnimation();
     if (oldPoint) {
         showArrow.value = false;

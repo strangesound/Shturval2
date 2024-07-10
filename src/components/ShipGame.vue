@@ -1,14 +1,14 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import shturval from '@/store';
 import PointInfo from '@/components/PointInfo.vue';
-import { states, currentState, setState } from '@/states'; // Импортируем константы и функцию
+import { states, currentState, setState, } from '@/states'; // Импортируем константы и функцию
 
 const props = defineProps({
     point: Object
 });
 
-console.log(props.point.image);
+// console.log(props.point.image);
 
 const heading = ref(0); // Направление в градусах
 const videoBackground = ref(null);
@@ -26,6 +26,31 @@ const deviations = {
     count: 0,
     totalDeviation: 0
 };
+
+let seaSound;
+let endRouteSound;
+
+
+
+
+
+
+onMounted(() => {
+    seaSound = new Audio('/sounds/sea.wav');
+    seaSound.currentTime = 0; // Сбросить время воспроизведения
+    seaSound.play();
+});
+
+onUnmounted(() => {
+    if (seaSound) {
+        seaSound.pause();
+        seaSound = null; // Убираем ссылку на объект
+    }
+    if (endRouteSound) {
+        endRouteSound.pause();
+        endRouteSound = null; // Убираем ссылку на объект
+    }
+});
 
 let lastEncoderValue = 0;  // Переменная для хранения последнего значения энкодера
 
@@ -103,7 +128,12 @@ function calculateScore() {
 }
 
 function stopGame() {
+
     clearInterval(updateInterval);
+
+    endRouteSound = new Audio('/sounds/route-bell-end.wav');
+    endRouteSound.play();
+
     score.value = calculateScore();
     // console.log(`Игра окончена! Ваши баллы: ${score.value}`);
     showInfo.value = true;
@@ -187,7 +217,7 @@ onMounted(() => {
 
         <div class="videoposition" :style="`transform: translateX(${heading / 5 * -1}vw);`">
             <video ref="videoBackground" @timeupdate="updateProgress" class="videobackground" muted autoplay playsinline
-                :src="`/video/${props.point.image}.mp4`"  @ended="stopGame"></video>
+                :src="`/video/${props.point.image}.mp4`" @ended="stopGame"></video>
             <!-- @ended="stopGame" -->
         </div>
         <div class="ship-position" :style="`transform: translateX(${heading / 20 * 1}vw);`">
@@ -213,7 +243,7 @@ onMounted(() => {
         </div>
 
         <div class="help" :style="{ opacity: hideWarning ? 0 : 1 }">
-            <video ref="mapVideo" src="/video_small_size/pointUnfold.webm" muted playsinline autoplay
+            <video ref="mapVideo" src="/video_small_size/pointUnfold.webm" playsinline autoplay
                 class="svitok"></video>
             <p class="help-text" :style="{ opacity: opacityValue }">С помощью штурвала удерживайте курс
                 прямо,<br>чтобы корабль двигался с максимальной скоростью!</p>

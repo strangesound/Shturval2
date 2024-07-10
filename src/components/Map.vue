@@ -3,7 +3,7 @@
         <!-- <img src="/images/sea.jpg" alt="" class="mapBackVideo"> -->
         <video ref="mapBackVideo" class="mapBackVideo" muted loop autoplay playsinline
             src="/video/screenSaver-loop.mp4"></video>
-        <video ref="mapVideo" src="/video_small_size/mainMapUnfold.webm" muted playsinline autoplay class="map"></video>
+        <video ref="mapVideo" src="/video_small_size/mainMapUnfold.webm" playsinline autoplay class="map"></video>
 
         <div ref="mapAdditionalInfo" class="container-timeout">
             <div :style="pointStyle" class="point">

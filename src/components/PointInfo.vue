@@ -3,7 +3,7 @@
     <div class="point-info">
       <img class="landmark-img" :src="`./images/landmarks/${point.image.toLowerCase()}.png`" :style="{ opacity: opacityValue }">
       <!-- <div class="svitok"></div> -->
-      <video ref="mapVideo" src="/video_small_size/pointUnfold.webm" muted playsinline autoplay class="svitok"></video>
+      <video ref="mapVideo" src="/video_small_size/pointUnfold.webm" playsinline autoplay class="svitok"></video>
 
       <div class="all-text" :style="{ opacity: opacityValue }">
         <h1>{{ point.landmark }}</h1>
