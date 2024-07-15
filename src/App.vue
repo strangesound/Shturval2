@@ -117,8 +117,9 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
       if (newIndex !== currentPointIndex.value) {
         currentPointIndex.value = newIndex;
         clearTimeout(showGameTimeout)
-        showGameTimeout = setTimeout(enterPointInfo, 300500);
-
+        if (newIndex) {
+          showGameTimeout = setTimeout(enterPointInfo, 3500);
+        }
         // console.log('currentPointIndex', currentPointIndex.value);
 
       }
