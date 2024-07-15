@@ -7,7 +7,7 @@
 
         <div ref="mapAdditionalInfo" class="container-timeout">
             <div :style="pointStyle" class="point">
-                <div class="tooltip">{{ props.point.landmark }}</div>
+                <div class="tooltip">{{ landmark }}</div>
             </div>
             <Rumba :point="props.point" />
         </div>
@@ -30,6 +30,8 @@ const props = defineProps({
 
 const showGameRef = toRef(props, 'showGame');
 
+const landmark = ref(null)
+
 
 console.log('showGame', props.showGame);
 
@@ -38,6 +40,7 @@ const mapBackVideo = ref(null);
 
 const pointStyle = computed(() => {
     if (!props.point) return {};
+    landmark.value = props.point.landmark
     return {
         position: 'absolute',
         left: `${props.point.x}px`,
@@ -54,15 +57,15 @@ setTimeout(() => {
 
 
 watch(showGameRef, (newValue) => {
-  if (mapBackVideo.value) {
-    if (newValue === true) {
-      mapBackVideo.value.pause();
-      console.log('video paused');
-    } else {
-      mapBackVideo.value.play();
-      console.log('video play');
+    if (mapBackVideo.value) {
+        if (newValue === true) {
+            mapBackVideo.value.pause();
+            console.log('video paused');
+        } else {
+            mapBackVideo.value.play();
+            console.log('video play');
+        }
     }
-  }
 });
 
 

@@ -4,6 +4,7 @@
     <div class="tech tech-buttons">
       <button @click="switchToScreensaver" class="set-screensaver">set-screensaver</button>
       <button @click="switchToMap" class="set-map">set-map</button>
+      <p class="shturval-value">Shturval value {{ shturval.currentValue % 360 }}</p>
     </div>
 
     <Transition>
@@ -31,10 +32,13 @@ import Map from '@/components/Map.vue';
 import ShipGame from '@/components/ShipGame.vue';
 import { states, currentState, setState, isInteractionBlocked } from '@/states';
 
-const currentPointIndex = ref(0);
+const currentPointIndex = ref(null);
 const showGame = ref(false);
 const showScreenSaver = ref(false);
 const currentPoint = computed(() => points[currentPointIndex.value]);
+
+console.log('currentPoint', currentPoint);
+
 
 let showGameTimeout
 let idleTimer;
@@ -74,7 +78,6 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
 
 
 
-
   switch (currentState.value) {
     case states.MAP:
       showGame.value = false
@@ -84,23 +87,60 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
         return;
       }
 
-      if (difference > 10) {
-        currentPointIndex.value = (currentPointIndex.value + 1) % points.length;
+      const calculateIndex = () => {
+        const normalizedVal = (shturval.currentValue % 360 + 360) % 360; // Приводим значение к положительному диапазону
+
+        console.log('normalizedVal', normalizedVal);
+
+        if (normalizedVal >= 355 || normalizedVal <= 5) {
+          return 0;
+        }
+        for (let i = 1; i <= 9; i++) {
+          const pointValue = i * 20;
+
+
+          if (Math.abs(normalizedVal - pointValue) <= 3) {
+            // console.log('pointValue', pointValue);
+            // console.log('Math.abs(nor malizedVal - pointValue)', Math.abs(normalizedVal - pointValue));
+            // console.log('i', i);
+            return i;
+          }
+        }
+
+        return -1
+
+
+      };
+
+      const newIndex = calculateIndex();
+      console.log('newIndex', newIndex);
+      if (newIndex !== -1 && newIndex !== currentPointIndex.value) {
+        currentPointIndex.value = newIndex;
         clearTimeout(showGameTimeout)
         showGameTimeout = setTimeout(enterPointInfo, 3500);
 
-      } else if (difference < -10) {
-        currentPointIndex.value = (currentPointIndex.value - 1 + points.length) % points.length;
-        clearTimeout(showGameTimeout)
-        showGameTimeout = setTimeout(enterPointInfo, 3500);
+        // console.log('currentPointIndex', currentPointIndex.value);
+
       }
+
+
+      // if (difference > 3) {
+      //   currentPointIndex.value = (currentPointIndex.value + 1) % points.length;
+      //   clearTimeout(showGameTimeout)
+      //   showGameTimeout = setTimeout(enterPointInfo, 300500);
+
+      // } else if (difference < -3) {
+      //   currentPointIndex.value = (currentPointIndex.value - 1 + points.length) % points.length;
+      //   clearTimeout(showGameTimeout)
+      //   showGameTimeout = setTimeout(enterPointInfo, 300500);
+      // }
       break;
 
     case states.POINT_INFO:
       break;
 
     case states.SCREENSAVER:
-      if (difference > 10 || difference < -10) {
+      if (difference > 3 || difference < -3) {
         setState(states.MAP);
       }
   }
@@ -208,5 +248,14 @@ function switchToScreensaver() {
   margin: .3vw;
   padding: .3vw;
   opacity: .5;
+}
+
+.shturval-value {
+  position: absolute;
+  top: 300;
+  left: 0;
+  z-index: 999999;
+  font-size: 1.5vw;
+
 }
 </style>

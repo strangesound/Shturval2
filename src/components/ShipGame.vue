@@ -151,7 +151,7 @@ watch(gameStopped, (newValue) => {
             console.log(newValue);
             const difference = newValue - oldValue;
 
-            if (Math.abs(difference) > 50) {
+            if (Math.abs(difference) > 5) {
                 setState(states.MAP);
                 stopWatch(); // Остановить наблюдателя после изменения состояния
             }
