@@ -27,7 +27,7 @@ const rumbaStyle = computed(() => {
         // transform: `rotate(${(angleInDegrees + 90) % 360}deg)`
         // transform: `rotate(${props.point.angle}deg)`
         transform: `rotate(${shturval.currentValue}deg)`
-    // };
+        // };
     };
 });
 
@@ -40,7 +40,7 @@ function setArrowAnimation() {
         clip-path: circle(7% at 800px 1370px);
       }
       100% {
-        clip-path: circle(${props.point.animationClipPath || '75'}% at 800px 1370px);
+        clip-path: circle(${props.point?.animationClipPath || '75'}% at 800px 1370px);
       }
     }
   `;
@@ -65,20 +65,21 @@ const arrowSrc = ref('');
 
 watch(() => props.point, (newPoint, oldPoint) => {
     console.log('props rumba', props.point);
-    console.log('props rumba', props.point.image);
-
-    playSound()
+    console.log('props rumba', props.point?.image);
+    if (props.point?.image) {
+        playSound()
+    }
     setArrowAnimation();
     if (oldPoint) {
         showArrow.value = false;
         setTimeout(() => {
-            arrowSrc.value = `/images/arrows/${props.point.image.toLowerCase()}.svg`;
+            arrowSrc.value = `/images/arrows/${props.point?.image.toLowerCase()}.svg`;
             setTimeout(() => {
                 showArrow.value = true;
             }, 300); // Время для исчезновения старой стрелки
         }, 300); // Время для исчезновения старой стрелки
     } else {
-        arrowSrc.value = `/images/arrows/${props.point.image.toLowerCase()}.svg`;
+        arrowSrc.value = `/images/arrows/${props.point?.image.toLowerCase()}.svg`;
         showArrow.value = true;
     }
 });

@@ -96,7 +96,7 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
           return 0;
         }
         for (let i = 1; i <= 9; i++) {
-          const pointValue = i * 20;
+          const pointValue = i * 36;
 
 
           if (Math.abs(normalizedVal - pointValue) <= 3) {
@@ -107,17 +107,17 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
           }
         }
 
-        return -1
+        return null
 
 
       };
 
       const newIndex = calculateIndex();
       console.log('newIndex', newIndex);
-      if (newIndex !== -1 && newIndex !== currentPointIndex.value) {
+      if (newIndex !== currentPointIndex.value) {
         currentPointIndex.value = newIndex;
         clearTimeout(showGameTimeout)
-        showGameTimeout = setTimeout(enterPointInfo, 3500);
+        showGameTimeout = setTimeout(enterPointInfo, 300500);
 
         // console.log('currentPointIndex', currentPointIndex.value);
 

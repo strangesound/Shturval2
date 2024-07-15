@@ -7,7 +7,7 @@
 
         <div ref="mapAdditionalInfo" class="container-timeout">
             <div :style="pointStyle" class="point">
-                <div class="tooltip">{{ landmark }}</div>
+                <div v-if="props.point" class="tooltip">{{ landmark }}</div>
             </div>
             <Rumba :point="props.point" />
         </div>

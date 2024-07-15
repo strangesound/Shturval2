@@ -62,15 +62,15 @@
       </g>
       <rect class="cls-1" width="564.39" height="564.39"/>
       <circle class="cls-2" cx="282.2" cy="11" r="11"/>
-      <circle class="cls-2" cx="374.95" cy="27.36" r="11"/>
-      <circle class="cls-2" cx="456.52" cy="74.45" r="11"/>
-      <circle class="cls-2" cx="517.06" cy="146.6" r="11"/>
-      <circle class="cls-2" cx="549.27" cy="235.1" r="11"/>
-      <circle class="cls-2" cx="549.27" cy="329.29" r="11"/>
-      <circle class="cls-2" cx="517.06" cy="417.79" r="11"/>
-      <circle class="cls-2" cx="456.52" cy="489.94" r="11"/>
-      <circle class="cls-2" cx="374.95" cy="537.04" r="11"/>
+      <circle class="cls-2" cx="441.6" cy="62.79" r="11"/>
+      <circle class="cls-2" cx="540.12" cy="198.39" r="11"/>
+      <circle class="cls-2" cx="540.12" cy="366" r="11"/>
+      <circle class="cls-2" cx="441.6" cy="501.6" r="11"/>
       <circle class="cls-2" cx="282.2" cy="553.39" r="11"/>
+      <circle class="cls-2" cx="122.79" cy="501.6" r="11"/>
+      <circle class="cls-2" cx="24.27" cy="366" r="11"/>
+      <circle class="cls-2" cx="24.27" cy="198.39" r="11"/>
+      <circle class="cls-2" cx="122.79" cy="62.79" r="11"/>
     </g>
   </g>
 </svg>
