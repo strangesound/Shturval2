@@ -1,7 +1,7 @@
 <template>
     <div>
-        <img src="/images/main/rumba.webp" alt="" class="rumba" :style="rumbaStyle">
-        <img src="/images/shipDots.svg" alt="" class="rumbaShip">
+        <img src="/images/main/steer.webp" alt="" class="rumba" :style="rumbaStyle">
+        <img src="/images/shipDots.webp" alt="" class="rumbaShip">
         <img :src="arrowSrc" class="arrow" :class="{ 'show': showArrow, 'hide': !showArrow }">
     </div>
 </template>
@@ -26,7 +26,7 @@ const rumbaStyle = computed(() => {
     return {
         // transform: `rotate(${(angleInDegrees + 90) % 360}deg)`
         // transform: `rotate(${props.point.angle}deg)`
-        transform: `rotate(${shturval.currentValue}deg)`
+        transform: `rotate(${shturval.currentValue-72}deg)`
         // };
     };
 });
@@ -73,13 +73,13 @@ watch(() => props.point, (newPoint, oldPoint) => {
     if (oldPoint) {
         showArrow.value = false;
         setTimeout(() => {
-            arrowSrc.value = `/images/arrows/${props.point?.image.toLowerCase()}.svg`;
+            arrowSrc.value = `/images/arrows/${props.point?.image.toLowerCase()}.webp`;
             setTimeout(() => {
                 showArrow.value = true;
             }, 300); // Время для исчезновения старой стрелки
         }, 300); // Время для исчезновения старой стрелки
     } else {
-        arrowSrc.value = `/images/arrows/${props.point?.image.toLowerCase()}.svg`;
+        arrowSrc.value = `/images/arrows/${props.point?.image.toLowerCase()}.webp`;
         showArrow.value = true;
     }
 });
@@ -99,21 +99,24 @@ watch(() => props.point, (newPoint, oldPoint) => {
 
 .rumba {
     position: absolute;
-    left: 527px;
-    top: 1102px;
+    left: 524px;
+    top: 1061px;
+
+    width: 586px;
+    height: 614px;
+    transform-origin: 'center center';
 
     /* transition: transform .1s ease-in; */
 }
 
 .rumbaShip {
     position: absolute;
-    left: 530px;
-    top: 1100px;
-    width: 564px;
-    height: 564px;
-    /* left: 800px;
-    top: 1370px;
-    transform: translate(-50%, -50%); */
+    left: 817px;
+    top: 1368px;
+    
+    width: 586px;
+    height: 614px;
+    transform: translateX(-50%) translateY(-50%);
 }
 
 .arrow {

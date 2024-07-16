@@ -244,7 +244,7 @@ onMounted(() => {
 
         <div class="help" :style="{ opacity: hideWarning ? 0 : 1 }">
             <video ref="mapVideo" src="/video_small_size/pointUnfold.webm" playsinline autoplay
-                class="svitok"></video>
+            class="svitok"></video>
             <p class="help-text" :style="{ opacity: opacityValue }">С помощью штурвала удерживайте курс
                 прямо,<br>чтобы корабль двигался с максимальной скоростью!</p>
         </div>
@@ -472,4 +472,7 @@ p {
     transition: rotate 2s;
     z-index: 99999;
 }
+
+
+
 </style>

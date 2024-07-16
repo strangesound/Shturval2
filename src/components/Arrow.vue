@@ -14,7 +14,7 @@
   const showArrow = ref(false);
   
   const arrowSrc = computed(() => {
-    return `/images/arrows/${props.currentPoint.image.toLowerCase()}_arrow.webp`;
+    return `/images/arrows/${props.currentPoint.image.toLowerCase()}.webp`;
   });
   
   watch(() => props.currentPoint, () => {

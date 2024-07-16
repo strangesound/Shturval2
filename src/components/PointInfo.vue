@@ -19,6 +19,10 @@
         <div class="courseArrowBrown" :style="{ transform: `rotate(${degrees}deg)` }"></div>
       </div>
     </div>
+
+    <img class="white-shturval" src="/images/white_shturval.webp">
+
+
   </div>
 </template>
 
@@ -83,6 +87,15 @@ onMounted(() => {
 
 
 <style scoped>
+
+.white-shturval{
+    position: absolute;
+    left: 150px;
+    bottom: 150px;
+    z-index: 999999999999999;
+}
+
+
 .container {
   position: absolute;
   top: 0;

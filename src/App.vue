@@ -4,7 +4,7 @@
     <div class="tech tech-buttons">
       <button @click="switchToScreensaver" class="set-screensaver">set-screensaver</button>
       <button @click="switchToMap" class="set-map">set-map</button>
-      <p class="shturval-value">Shturval value {{ shturval.currentValue % 360 }}</p>
+      <!-- <p class="shturval-value">Shturval value {{ shturval.currentValue % 360 }}</p> -->
     </div>
 
     <Transition>
@@ -37,7 +37,7 @@ const showGame = ref(false);
 const showScreenSaver = ref(false);
 const currentPoint = computed(() => points[currentPointIndex.value]);
 
-console.log('currentPoint', currentPoint);
+// console.log('currentPoint', currentPoint);
 
 
 let showGameTimeout
@@ -66,7 +66,10 @@ function enterPointInfo() {
   routeBellArrowEnd.play();
 
   setState(states.POINT_INFO);
+
   showGame.value = true;
+  console.log('currentPoint', currentPoint);
+  console.log('showGame.value', showGame.value);
 
 }
 
@@ -117,24 +120,17 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
       if (newIndex !== currentPointIndex.value) {
         currentPointIndex.value = newIndex;
         clearTimeout(showGameTimeout)
-        if (newIndex) {
+        if (newIndex !== null) {
           showGameTimeout = setTimeout(enterPointInfo, 3500);
         }
-        // console.log('currentPointIndex', currentPointIndex.value);
+        if (newIndex === null) {
+          clearTimeout(showGameTimeout)
+        }
 
       }
 
 
-      // if (difference > 3) {
-      //   currentPointIndex.value = (currentPointIndex.value + 1) % points.length;
-      //   clearTimeout(showGameTimeout)
-      //   showGameTimeout = setTimeout(enterPointInfo, 300500);
 
-      // } else if (difference < -3) {
-      //   currentPointIndex.value = (currentPointIndex.value - 1 + points.length) % points.length;
-      //   clearTimeout(showGameTimeout)
-      //   showGameTimeout = setTimeout(enterPointInfo, 300500);
-      // }
       break;
 
     case states.POINT_INFO:

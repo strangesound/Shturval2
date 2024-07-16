@@ -20,7 +20,7 @@ function setState(state) {
     setTimeout(() => {
       interactionBlocked.value = false; // Снимаем блокировку через 4 секунды
       console.log('Interaction unblocked');
-    }, 1500);
+    }, 1000);
   }
 }
 
