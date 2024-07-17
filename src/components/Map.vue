@@ -74,8 +74,8 @@ const pointPosition = computed(() => {
     if (!props.point) {
         return {
             opacity: '0',
-            left: '0px',
-            top: '0px'
+            left: '-100px',
+            top: '-100px'
         };
     }
     return {
@@ -118,6 +118,8 @@ watch(showGameRef, (newValue) => {
     opacity: 0;
     position: absolute;
     transition: opacity 1s;
+    /* transition: opacity 1s, left 1s, top 1s; */
+
     animation: pulse 1.5s infinite ease-in-out;
     /* Применение анимации */
 
