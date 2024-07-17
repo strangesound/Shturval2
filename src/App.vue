@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
 
-    <div class="tech tech-buttons">
+    <!-- <div class="tech tech-buttons">
       <button @click="switchToScreensaver" class="set-screensaver">set-screensaver</button>
       <button @click="switchToMap" class="set-map">set-map</button>
-      <!-- <p class="shturval-value">Shturval value {{ shturval.currentValue % 360 }}</p> -->
-    </div>
+      <p class="shturval-value">Shturval value {{ shturval.currentValue % 360 }}</p>
+    </div> -->
 
     <Transition>
       <ScreenSaver v-if="showScreenSaver" />
@@ -16,7 +16,7 @@
     </Transition>
 
     <Transition>
-      <ShipGame v-if="showGame" :point="currentPoint" />
+      <ShipGame v-if="showGame" :point="currentPoint" @unmounted="handleShipUnmounted" />
     </Transition>
 
   </div>
@@ -59,6 +59,9 @@ function resetIdleTimer() {
 
 const routeBellArrowEnd = new Audio('/sounds/route-bell-arrow-end.wav');
 
+const handleShipUnmounted = () => {
+  currentPointIndex.value = null;
+};
 
 
 function enterPointInfo() {
@@ -68,9 +71,8 @@ function enterPointInfo() {
   setState(states.POINT_INFO);
 
   showGame.value = true;
-  console.log('currentPoint', currentPoint);
-  console.log('showGame.value', showGame.value);
-
+  // console.log('currentPoint', currentPoint);
+  // console.log('showGame.value', showGame.value);
 }
 
 
@@ -79,12 +81,11 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
   resetIdleTimer();
   const difference = newValue - oldValue;
 
-
-
   switch (currentState.value) {
     case states.MAP:
       showGame.value = false
       showScreenSaver.value = false
+      // currentPointIndex.value = null
 
       if (isInteractionBlocked()) {
         return;
@@ -92,31 +93,25 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
 
       const calculateIndex = () => {
         const normalizedVal = (shturval.currentValue % 360 + 360) % 360; // Приводим значение к положительному диапазону
-
-        console.log('normalizedVal', normalizedVal);
-
+        // console.log('normalizedVal', normalizedVal);
         if (normalizedVal >= 355 || normalizedVal <= 5) {
           return 0;
         }
         for (let i = 1; i <= 9; i++) {
           const pointValue = i * 36;
 
-
-          if (Math.abs(normalizedVal - pointValue) <= 3) {
+          if (Math.abs(normalizedVal - pointValue) <= 5) {
             // console.log('pointValue', pointValue);
             // console.log('Math.abs(nor malizedVal - pointValue)', Math.abs(normalizedVal - pointValue));
             // console.log('i', i);
             return i;
           }
         }
-
         return null
-
-
       };
 
       const newIndex = calculateIndex();
-      console.log('newIndex', newIndex);
+      // console.log('newIndex', newIndex);
       if (newIndex !== currentPointIndex.value) {
         currentPointIndex.value = newIndex;
         clearTimeout(showGameTimeout)
@@ -126,11 +121,7 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
         if (newIndex === null) {
           clearTimeout(showGameTimeout)
         }
-
       }
-
-
-
       break;
 
     case states.POINT_INFO:
@@ -145,20 +136,20 @@ watch(() => shturval.currentValue, (newValue, oldValue) => {
 
 // Only for test!!!
 
-function switchToMap() {
-  setState(states.MAP);
-  showGame.value = false;
-  showScreenSaver.value = false;
-  console.log('Switched to MAP state');
-}
+// function switchToMap() {
+//   setState(states.MAP);
+//   showGame.value = false;
+//   showScreenSaver.value = false;
+//   console.log('Switched to MAP state');
+// }
 
-function switchToScreensaver() {
-  setState(states.SCREENSAVER);
-  clearTimeout(showGameTimeout)
-  showGame.value = false;
-  showScreenSaver.value = true;
-  console.log('Switched to SCREENSAVER state');
-}
+// function switchToScreensaver() {
+//   setState(states.SCREENSAVER);
+//   clearTimeout(showGameTimeout)
+//   showGame.value = false;
+//   showScreenSaver.value = true;
+//   console.log('Switched to SCREENSAVER state');
+// }
 
 
 

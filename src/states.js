@@ -11,7 +11,7 @@ const interactionBlocked = ref(false);
 
 function setState(state) {
   currentState.value = state;
-  // console.log('currentState.value', currentState.value);
+  console.log('currentState.value', currentState.value);
 
   if (state === states.MAP) {
     interactionBlocked.value = true; // Блокируем взаимодействия

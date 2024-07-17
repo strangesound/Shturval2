@@ -2,7 +2,8 @@
     <div>
         <img src="/images/main/steer.webp" alt="" class="rumba" :style="rumbaStyle">
         <img src="/images/shipDots.webp" alt="" class="rumbaShip">
-        <img :src="arrowSrc" class="arrow" :class="{ 'show': showArrow, 'hide': !showArrow }">
+        <!-- <img :src="arrowSrc" class="arrow" :class="{ 'show': showArrow, 'hide': !showArrow }"> -->
+        <video :src="arrowSrc" class="arrow" :class="{ 'show': showArrow, 'hide': !showArrow }" playsinline muted autoplay></video>
     </div>
 </template>
 
@@ -64,8 +65,8 @@ const arrowSrc = ref('');
 
 
 watch(() => props.point, (newPoint, oldPoint) => {
-    console.log('props rumba', props.point);
-    console.log('props rumba', props.point?.image);
+    // console.log('props rumba', props.point);
+    // console.log('props rumba', props.point?.image);
     if (props.point?.image) {
         playSound()
     }
@@ -73,13 +74,15 @@ watch(() => props.point, (newPoint, oldPoint) => {
     if (oldPoint) {
         showArrow.value = false;
         setTimeout(() => {
-            arrowSrc.value = `/images/arrows/${props.point?.image.toLowerCase()}.webp`;
+            // arrowSrc.value = `/images/arrows/${props.point?.image.toLowerCase()}.webp`;
+            arrowSrc.value = `/video_small_size/arrows/${props.point?.image.toLowerCase()}.webm`;
             setTimeout(() => {
                 showArrow.value = true;
             }, 300); // Время для исчезновения старой стрелки
         }, 300); // Время для исчезновения старой стрелки
     } else {
-        arrowSrc.value = `/images/arrows/${props.point?.image.toLowerCase()}.webp`;
+        // arrowSrc.value = `/images/arrows/${props.point?.image.toLowerCase()}.webp`;
+        arrowSrc.value = `/video_small_size/arrows/${props.point?.image.toLowerCase()}.webm`;
         showArrow.value = true;
     }
 });
@@ -89,6 +92,10 @@ watch(() => props.point, (newPoint, oldPoint) => {
 </script>
 
 <style scoped>
+
+
+
+
 .showMe {
     position: absolute;
     left: 10%;
@@ -126,9 +133,10 @@ watch(() => props.point, (newPoint, oldPoint) => {
     top: 0;
     left: 0;
     opacity: 0;
-    clip-path: circle(0% at 800px 1370px);
+    /* clip-path: circle(0% at 800px 1370px); */
+    /* , clip-path 0.3s ease-in */
     /* Центр румбы */
-    transition: opacity 0.3s ease-in, clip-path 0.3s ease-in;
+    transition: opacity 0.3s ease-in;
     /* background-color: #007bff6b; */
 }
 

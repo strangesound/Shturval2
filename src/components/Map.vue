@@ -1,15 +1,19 @@
 <template>
     <div class="map-container">
-        <!-- <img src="/images/sea.jpg" alt="" class="mapBackVideo"> -->
-        <video ref="mapBackVideo" class="mapBackVideo" muted loop autoplay playsinline
-            src="/video/screenSaver-loop.mp4"></video>
-        <video ref="mapVideo" src="/video_small_size/mainMapUnfold.webm" playsinline autoplay class="map"></video>
+        <img src="/images/map-background.webp" alt="" class="mapBackVideo">
+        <!-- <video ref="mapBackVideo" class="mapBackVideo" muted loop autoplay playsinline
+            src="/video/screenSaver-loop.mp4"></video> -->
+        <video ref="mapVideo" src="/video_small_size/mainMapUnfold.webm" playsinline muted autoplay class="map"></video>
 
         <div ref="mapAdditionalInfo" class="container-timeout">
             <!-- <div :style="pointStyle" class="point">
                 <div v-if="props.point" class="tooltip">{{ landmark }}</div>
             </div> -->
             <p :style="pointStyle" class="tooltip2">{{ props?.point?.landmark }}</p>
+            <div class="arrowsTooltip3" :style="{ opacity: tooltip3Opacity }">
+                <p class="tooltip3" >поверните<br>штурвал и остановите<br>на три секунды для выбора достопримечательности</p>
+                <img src="/images/steer-arrows.svg" alt="" class="steer-arrows">
+            </div>
             <img src="/images/point.svg" class="point-dot" :style="pointPosition" alt="">
 
             <Rumba :point="props.point" />
@@ -20,11 +24,11 @@
 
 <script setup>
 import { ref, computed, watch, toRef, nextTick } from 'vue';
-// import points from '@/assets/json/points.json';
 import Rumba from '@/components/Rumba.vue';
+import shturval from '@/store';
+
 
 const mapAdditionalInfo = ref(null)
-const opacityValue = ref(0);
 
 const props = defineProps({
     point: Object,
@@ -37,6 +41,24 @@ const showGameRef = toRef(props, 'showGame');
 const mapVideo = ref(null);
 const mapBackVideo = ref(null);
 
+
+const tooltip3Opacity = ref(1);
+
+const resetTooltip3Opacity = () => {
+    tooltip3Opacity.value = 1;
+};
+
+let tooltip3Timer;
+watch(() => props.point, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        tooltip3Opacity.value = 0;
+        clearTimeout(tooltip3Timer);
+        tooltip3Timer = setTimeout(resetTooltip3Opacity, 10000);
+    }
+});
+
+
+
 const pointStyle = computed(() => {
     if (!props.point) {
         return { opacity: '0' }
@@ -45,6 +67,8 @@ const pointStyle = computed(() => {
         opacity: 1
     };
 });
+
+
 
 const pointPosition = computed(() => {
     if (!props.point) {
@@ -57,7 +81,7 @@ const pointPosition = computed(() => {
     return {
         opacity: '1',
         position: 'absolute',
-        left: `${props.point.x}px`, // Использование calc()
+        left: `${props.point.x}px`,
         top: `${props.point.y}px`,
         textAlign: 'center'
     };
@@ -66,7 +90,7 @@ const pointPosition = computed(() => {
 
 setTimeout(() => {
     mapAdditionalInfo.value.style.opacity = 1
-}, 2000);
+}, 2500);
 
 
 watch(showGameRef, (newValue) => {
@@ -113,6 +137,43 @@ watch(showGameRef, (newValue) => {
     }
 }
 
+.steer-arrows {
+    width: 745px;
+    position: absolute;
+    left: 445px;
+    top: 1273px;
+    animation: sway 2s ease-in-out infinite;
+    animation-delay: 2s;
+    opacity: 1;
+    transition: opacity 1s;
+
+}
+
+@keyframes sway {
+    10% {
+        transform: rotate(0deg);
+    }
+
+    16% {
+        transform: rotate(10deg);
+    }
+
+    32% {
+        transform: rotate(-10deg);
+    }
+
+    48% {
+        transform: rotate(10deg);
+    }
+
+    64% {
+        transform: rotate(-10deg);
+    }
+
+    90% {
+        transform: rotate(0deg);
+    }
+}
 
 .container-timeout {
     opacity: 0;
@@ -131,6 +192,7 @@ watch(showGameRef, (newValue) => {
     top: 0;
     left: 0;
     overflow: hidden;
+    /* background-color: #64370e; */
 }
 
 .map {
@@ -186,6 +248,30 @@ watch(showGameRef, (newValue) => {
     z-index: 2;
     white-space: pre-wrap;
     opacity: 0;
+    transition: opacity .3s;
+}
+
+.tooltip3 {
+    position: absolute;
+    left: 817px;
+    top: 1368px;
+    transform: translateX(-50%) translateY(-50%);
+    display: flex;
+    flex-shrink: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 350px;
+    height: 500px;
+    color: #eedec6;
+    text-align: center;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 400;
+    line-height: 1.2;
+    z-index: 2;
+    white-space: pre-wrap;
+    opacity: 1;
     transition: opacity .3s;
 }
 

@@ -4,6 +4,14 @@ import shturval from '@/store';
 import PointInfo from '@/components/PointInfo.vue';
 import { states, currentState, setState, } from '@/states'; // Импортируем константы и функцию
 
+const emit = defineEmits(['unmounted']);
+
+onUnmounted(() => {
+  emit('unmounted');
+});
+
+
+
 const props = defineProps({
     point: Object
 });
@@ -60,7 +68,7 @@ function updateHeading(currentEncoderValue) {
     const normalizedEncoderDelta = Math.max(-30, Math.min(30, encoderDelta)); // Ограничение изменения от -30 до +30
 
     // Получение случайного воздействия ветра от -5 до +5
-    const windStrength = Math.random() * 10 - 5;
+    const windStrength = Math.random() * 20 - 10;
 
     // Расчет нового направления с учётом ветра
     const newHeading = heading.value + normalizedEncoderDelta + windStrength;
@@ -140,7 +148,8 @@ function stopGame() {
 
     setTimeout(() => {
         gameStopped.value = true;
-    }, 300);
+        console.log('gameStopped.value', gameStopped.value);
+    }, 6000);
 }
 
 
@@ -213,7 +222,7 @@ onMounted(() => {
 
 <template>
     <div class="container">
-        <button class="tech" @click="stopGame">Остановить игру {{ shturval.currentValue }}</button>
+        <!-- <button class="tech" @click="stopGame">Остановить игру {{ shturval.currentValue }}</button> -->
 
         <div class="videoposition" :style="`transform: translateX(${heading / 5 * -1}vw);`">
             <video ref="videoBackground" @timeupdate="updateProgress" class="videobackground" muted autoplay playsinline
@@ -243,7 +252,7 @@ onMounted(() => {
         </div>
 
         <div class="help" :style="{ opacity: hideWarning ? 0 : 1 }">
-            <video ref="mapVideo" src="/video_small_size/pointUnfold.webm" playsinline autoplay
+            <video ref="mapVideo" src="/video_small_size/pointUnfold.webm" playsinline muted autoplay
             class="svitok"></video>
             <p class="help-text" :style="{ opacity: opacityValue }">С помощью штурвала удерживайте курс
                 прямо,<br>чтобы корабль двигался с максимальной скоростью!</p>
