@@ -18,6 +18,9 @@
     <Transition>
       <ShipGame v-if="showGame" :point="currentPoint" @unmounted="handleShipUnmounted" />
     </Transition>
+    <!-- <ExtraGame :extraGameDirection="extraGameDirection" /> -->
+
+
 
   </div>
 </template>
@@ -28,6 +31,7 @@ import shturval from '@/store';
 import points from '@/assets/json/points.json';
 import ScreenSaver from '@/components/ScreenSaver.vue';
 import Map from '@/components/Map.vue';
+import ExtraGame from '@/components/ExtraGame.vue';
 
 import ShipGame from '@/components/ShipGame.vue';
 import { states, currentState, setState, isInteractionBlocked } from '@/states';
@@ -36,7 +40,7 @@ const currentPointIndex = ref(null);
 const showGame = ref(false);
 const showScreenSaver = ref(false);
 const currentPoint = computed(() => points[currentPointIndex.value]);
-
+// const extraGameDirection = ref(0)
 // console.log('currentPoint', currentPoint);
 
 
@@ -54,7 +58,7 @@ function resetIdleTimer() {
     clearTimeout(showGameTimeout);
     showScreenSaver.value = true;
     showGame.value = false;
-  }, 90000);
+  }, 9000000);
 }
 
 const routeBellArrowEnd = new Audio('/sounds/route-bell-arrow-end.wav');

@@ -2,12 +2,13 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import shturval from '@/store';
 import PointInfo from '@/components/PointInfo.vue';
-import { states, currentState, setState, } from '@/states'; // Импортируем константы и функцию
+import ExtraGame from '@/components/ExtraGame.vue';
+import { states, setState, } from '@/states'; // Импортируем константы и функцию
 
 const emit = defineEmits(['unmounted']);
 
 onUnmounted(() => {
-  emit('unmounted');
+    emit('unmounted');
 });
 
 
@@ -16,7 +17,6 @@ const props = defineProps({
     point: Object
 });
 
-// console.log(props.point.image);
 
 const heading = ref(0); // Направление в градусах
 const videoBackground = ref(null);
@@ -26,9 +26,14 @@ const meters = ref(5000)
 let updateInterval = null;
 const showInfo = ref(false);
 const score = ref(0);
+const extraGameScore = ref(0)
 const gameStopped = ref(false);
 const hideWarning = ref(false);
+const extraGameDirection = ref(null)
 
+
+
+const handleResultUpdate = (newResult) => { extraGameScore.value = newResult; };
 
 const deviations = {
     count: 0,
@@ -47,6 +52,10 @@ onMounted(() => {
     seaSound = new Audio('/sounds/sea.wav');
     seaSound.currentTime = 0; // Сбросить время воспроизведения
     seaSound.play();
+
+    extraGameDirection.value = Math.random() > 0.5 ? 1 : 0
+
+
 });
 
 onUnmounted(() => {
@@ -131,8 +140,11 @@ function calculateScore() {
 
     // Подсчет баллов на основе среднего отклонения
     const score = 100 - (averageDeviation / 30) * (100 - 40); // 100 баллов за 0 отклонений, 40 баллов за среднее отклонение 30
+    console.log('score', score);
+    let finalScore = score + extraGameScore.value;
+    console.log('finalScore', finalScore);
 
-    return Math.round(Math.max(40, score)); // Гарантируем, что минимальный балл не меньше 40
+    return Math.max(40, Math.min(100, finalScore));;
 }
 
 function stopGame() {
@@ -217,6 +229,113 @@ onMounted(() => {
     }, 1000);
 });
 
+const extraGameShow = ref(false)
+const blurValue = ref(0);
+const stdDeviation = computed(() => `${blurValue.value} ${blurValue.value / 10}`);
+const showRotationWarning = ref(false);
+const showSwimFurtherWarning = ref(false);
+const intervalId = ref(null);
+const time = ref(5.00);
+
+
+function startExtraGame() {
+    if (videoBackground.value) {
+        videoBackground.value.pause();
+    }
+    extraGameShow.value = true;
+    clearInterval(updateInterval);
+
+    // console.log('extraGameShowStart', extraGameShow);
+
+    animateBlurValue(200, 1000);
+}
+
+function endExtraGame() {
+    extraGameShow.value = false;
+
+    updateInterval = setInterval(() => {
+        updateHeading(shturval.currentValue);
+    }, 200);
+    console.log('Extra game ended and interval resumed');
+
+
+    // console.log('extraGameShowEnd', extraGameShow);
+    animateBlurValue(0, 1000);
+    if (videoBackground.value) {
+        videoBackground.value.play();
+    }
+}
+
+function animateBlurValue(targetValue, duration) {
+    const startValue = blurValue.value;
+    const startTime = performance.now();
+
+    function animate(currentTime) {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+        blurValue.value = startValue + (targetValue - startValue) * progress;
+
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+    requestAnimationFrame(animate);
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+const showRotationWarningTime = computed(() => {
+    let timeString = time.value.toFixed(2).replace('.', ',');
+    if (time.value < 0.01) {
+        timeString = '0,00';
+    }
+    return timeString;
+});
+
+const updateTimer = () => {
+    if (time.value > 0) {
+        time.value -= 0.1;
+    }
+};
+
+async function executeSequence() {
+    await sleep(10000);
+
+    showRotationWarning.value = true;
+    intervalId.value = setInterval(updateTimer, 100);
+
+    await sleep(5000);
+    showRotationWarning.value = false;
+
+    // Запуск игры
+    clearInterval(intervalId.value);
+    startExtraGame();
+
+    await sleep(6000);
+
+    endExtraGame();
+    await sleep(1000);
+
+    showSwimFurtherWarning.value = true
+
+    await sleep(3000);
+
+
+    showSwimFurtherWarning.value = false
+
+
+}
+
+
+
+onMounted(() => {
+    executeSequence()
+});
+
+
 
 </script>
 
@@ -224,26 +343,34 @@ onMounted(() => {
     <div class="container">
         <!-- <button class="tech" @click="stopGame">Остановить игру {{ shturval.currentValue }}</button> -->
 
+
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="filter-svg">
+            <defs>
+                <filter id="horizontalBlur">
+                    <feGaussianBlur in="SourceGraphic" :stdDeviation="stdDeviation" />
+                </filter>
+            </defs>
+        </svg>
+
         <div class="videoposition" :style="`transform: translateX(${heading / 5 * -1}vw);`">
             <video ref="videoBackground" @timeupdate="updateProgress" class="videobackground" muted autoplay playsinline
-                :src="`/video/${props.point.image}.mp4`" @ended="stopGame"></video>
+                :src="`/video/${props?.point?.image}.mp4`" @ended="stopGame"></video>
             <!-- @ended="stopGame" -->
         </div>
         <div class="ship-position" :style="`transform: translateX(${heading / 20 * 1}vw);`">
-            <video ref="videoShip" class="ship" muted loop autoplay playsinline
-                :src="`/video/${props.point.image}.webm`"></video>
+            <video ref="videoShip" class="ship blur-active" muted loop autoplay playsinline
+                :src="`/video/${props?.point?.image}.webm`"></video>
         </div>
 
         <div class="gradient"></div>
 
-        <div class="course-container" :style="{ opacity: showInfo || !hideWarning ? 0 : 1 }">
-
+        <div class="course-container" :style="{ opacity: (showInfo || !hideWarning || extraGameShow) ? 0 : 1 }">
             <div class="course"></div>
             <div class="course-arrow" :style="{ rotate: `${heading}deg` }"></div>
             <div class="course-text-container">
                 <p class="smalltext">Скорость</p>
                 <p class="largetext">{{ (playbackRate * 6).toFixed() }} {{ getDeclension((playbackRate *
-            6).toFixed()) }}</p>
+                    6).toFixed()) }}</p>
             </div>
             <div class="progress-container">
                 <img src="/images/ui2/progressBar.svg" alt="" class="progressRed" :style="redStyle">
@@ -251,18 +378,29 @@ onMounted(() => {
             <div class="landmark-name">{{ props.point.landmark }}</div>
         </div>
 
+        <div class="showRotationWarning" v-if="showRotationWarning">
+            <p class="" v-html="`Резкий поворот<br>${extraGameDirection ? 'направо' : 'налево'} через`"></p>
+            <p class="">{{ showRotationWarningTime }} секунды</p>
+        </div>
+        <div class="showRotationWarning" v-if="showSwimFurtherWarning">
+            <p class="">Отлично,<br>плывем дальше!</p>
+        </div>
+
         <div class="help" :style="{ opacity: hideWarning ? 0 : 1 }">
             <video ref="mapVideo" src="/video_small_size/pointUnfold.webm" playsinline muted autoplay
-            class="svitok"></video>
+                class="svitok"></video>
             <p class="help-text" :style="{ opacity: opacityValue }">С помощью штурвала удерживайте курс
                 прямо,<br>чтобы корабль двигался с максимальной скоростью!</p>
         </div>
+
+        <Transition>
+            <ExtraGame v-if="extraGameShow" @result="handleResultUpdate" :extraGameDirection="extraGameDirection" />
+        </Transition>
 
 
         <Transition>
             <PointInfo v-if="showInfo" :point="props.point" :score="score" />
         </Transition>
-
 
 
     </div>
@@ -271,6 +409,40 @@ onMounted(() => {
 
 
 <style scoped>
+.filter-svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100%;
+    z-index: 99999999999;
+    pointer-events: none;
+}
+
+.blur-active {
+    filter: url(#horizontalBlur);
+}
+
+
+
+.showRotationWarning {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    font-size: 110px;
+    line-height: 1.2;
+    width: 100vw;
+    height: 100%;
+    background-color: #00000050;
+    opacity: 1;
+    transition: opacity 1s;
+    z-index: 100000000;
+}
+
 .help {
     position: absolute;
     display: flex;
@@ -367,6 +539,10 @@ p {
     height: 100vh;
     object-fit: fill;
     left: -50vw;
+    transition: filter 1s ease;
+    filter: url(#horizontalBlur);
+
+
     /* object-position: 50% 50%; */
 }
 
@@ -388,6 +564,10 @@ p {
     height: 100vh;
     object-fit: fill;
     left: -50vw;
+    transition: filter 1s ease;
+    filter: url(#horizontalBlur);
+
+
     /* object-position: 50% 50%; */
 }
 
@@ -481,7 +661,4 @@ p {
     transition: rotate 2s;
     z-index: 99999;
 }
-
-
-
 </style>
