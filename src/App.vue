@@ -31,7 +31,7 @@ import shturval from '@/store';
 import points from '@/assets/json/points.json';
 import ScreenSaver from '@/components/ScreenSaver.vue';
 import Map from '@/components/Map.vue';
-import ExtraGame from '@/components/ExtraGame.vue';
+// import ExtraGame from '@/components/ExtraGame.vue';
 
 import ShipGame from '@/components/ShipGame.vue';
 import { states, currentState, setState, isInteractionBlocked } from '@/states';
@@ -58,7 +58,7 @@ function resetIdleTimer() {
     clearTimeout(showGameTimeout);
     showScreenSaver.value = true;
     showGame.value = false;
-  }, 9000000);
+  }, 90000);
 }
 
 const routeBellArrowEnd = new Audio('/sounds/route-bell-arrow-end.wav');

@@ -19,8 +19,7 @@
                 <p class="scores" :style="{ opacity: !stopGame ? 0 : 1 }"> {{ getDeclension(result) }}</p>
             </div>
             <!-- Заполняющийся элемент бублик -->
-            <svg class="svg-donut" viewBox="0 0 1034 1034" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink">
+            <svg class="svg-donut" viewBox="0 0 1032 1032">
                 <defs>
                     <filter id="outer-glow-1" filterUnits="userSpaceOnUse">
                         <feOffset dx="0" dy="0" />
@@ -29,17 +28,13 @@
                         <feComposite in2="blur" operator="in" />
                         <feComposite in="SourceGraphic" />
                     </filter>
-                    <!-- <clipPath id="clippath">
-                        <polygon class="cls-2"
-                            points="800 150 516.56 90.4 90.22 263.5 206.32 1132.28 516.56 1276.28 972.63 1276.28 1627.93 535.7 516.56 140.27" />
-                    </clipPath> -->
+
                 </defs>
-                <g class="cls-4">
-                    <g class="cls-1">
-                        <circle ref="donut" class="cls-3" cx="516.56" cy="516.8" r="376.53"
-                            :stroke-dasharray="strokeDasharray" :stroke-dashoffset="strokeDashoffset" />
+                    <g>
+                        <circle ref="donut" class="cls-3" cx="516" cy="516" r="376" 
+                        :stroke-dasharray="strokeDasharray"
+                        :stroke-dashoffset="strokeDashoffset" />
                     </g>
-                </g>
             </svg>
         </div>
 
@@ -93,7 +88,7 @@ const updateTimer = () => {
         time.value -= 0.1;
     } else {
         clearInterval(intervalId);
-        stopGame.value = true;
+        // stopGame.value = true;
         result.value = Math.round(10 / 360 * maxAdjustedValue.value)
         sendResult()
         console.log(result);
@@ -119,7 +114,7 @@ function getDeclension(number) {
 
 
 
-let strokeDasharray = (2 * Math.PI * 500).toFixed(2); // Длина окружности = 2πr, где r = 500
+let strokeDasharray = (2 * Math.PI * 376).toFixed(2); // Длина окружности = 2πr, где r = 500
 const strokeDashoffset = ref(strokeDasharray);
 const initialShturvalValue = ref(null);
 
@@ -297,26 +292,14 @@ p {
 }
 
 
-.cls-1 {
-    clip-path: url(#clippath);
-}
 
-.cls-2 {
-    stroke-width: 0px;
-}
-
-.cls-2,
-.cls-3 {
-    fill: none;
-}
 
 .cls-3 {
     stroke: #fff;
     stroke-miterlimit: 10;
     stroke-width: 100px;
-}
-
-.cls-4 {
+    fill: none;
     filter: url(#outer-glow-1);
+
 }
 </style>
