@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <div class="point-info">
-      <img class="landmark-img" :src="`./images/landmarks/${point.image.toLowerCase()}.png`" :style="{ opacity: opacityValue }">
+      <img class="landmark-img" :src="`./images/landmarks/${point.image.toLowerCase()}.png`"
+        :style="{ opacity: opacityValue }">
       <!-- <div class="svitok"></div> -->
       <video ref="mapVideo" src="/video_small_size/pointUnfold.webm" playsinline muted autoplay class="svitok"></video>
 
@@ -36,6 +37,8 @@ const props = defineProps({
   point: Object,
   score: Number
 });
+
+console.log('props.score', props.score);
 
 function getDeclension(number) {
   const lastDigit = number % 10;
@@ -87,12 +90,11 @@ onMounted(() => {
 
 
 <style scoped>
-
-.white-shturval{
-    position: absolute;
-    left: 150px;
-    bottom: 150px;
-    z-index: 999999999999999;
+.white-shturval {
+  position: absolute;
+  left: 150px;
+  bottom: 150px;
+  z-index: 999999999999999;
 }
 
 
@@ -175,7 +177,7 @@ img {
 
 }
 
-.all-text{
+.all-text {
   opacity: 0;
   transition: opacity 2.1s ease;
 

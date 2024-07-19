@@ -305,10 +305,13 @@ async function executeSequence() {
     await sleep(10000);
 
     showRotationWarning.value = true;
+    console.log('showRotationWarning', showRotationWarning.value);
+
     intervalId.value = setInterval(updateTimer, 100);
 
     await sleep(5000);
     showRotationWarning.value = false;
+    console.log('showRotationWarning', showRotationWarning.value);
 
     // Запуск игры
     clearInterval(intervalId.value);
@@ -378,11 +381,11 @@ onMounted(() => {
             <div class="landmark-name">{{ props.point.landmark }}</div>
         </div>
 
-        <div class="showRotationWarning" v-if="showRotationWarning">
+        <div class="showRotationWarning" :style="{ opacity: showRotationWarning ? 1 : 0 }">
             <p class="" v-html="`Резкий поворот<br>${extraGameDirection ? 'направо' : 'налево'} через`"></p>
             <p class="">{{ showRotationWarningTime }} секунды</p>
         </div>
-        <div class="showRotationWarning" v-if="showSwimFurtherWarning">
+        <div class="showRotationWarning" :style="{ opacity: showSwimFurtherWarning ? 1 : 0 }">
             <p class="">Отлично,<br>плывем дальше!</p>
         </div>
 
@@ -438,7 +441,7 @@ onMounted(() => {
     width: 100vw;
     height: 100%;
     background-color: #00000050;
-    opacity: 1;
+    opacity: 0;
     transition: opacity 1s;
     z-index: 100000000;
 }

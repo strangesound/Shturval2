@@ -130,33 +130,18 @@ const updateProgress = (value) => {
     if (props.extraGameDirection === 1) {
         // Рост по часовой стрелке
         offsetValue = ((1 - value / 360) * circleLength).toFixed(2);
-        // offsetValue = (((value / 360) * circleLength).toFixed(2));
 
     } else {
-
-        // strokeDashoffset.value = (circleLength - (value / 360) * circleLength).toFixed(2);
-        // strokeDashoffset.value = ((1 - invertedValue / 360) * circleLength).toFixed(2);
-
-        // strokeDashoffset.value = (((1 - value / 360) * circleLength) - (2 * Math.PI * 500)).toFixed(2);
-        // strokeDashoffset.value = ((invertedValue / 360) * circleLength).toFixed(2);
-        // const invertedValue = 360 - value;
-        // strokeDashoffset.value = ((1 - invertedValue / 360) * circleLength).toFixed(2);
-        // let offest = (((value / 360) * circleLength) * -1).toFixed(2);
-        offsetValue = (((value / 360) * circleLength).toFixed(2) * -1);
-
-
-        console.log('offsetValue', offsetValue);
-        if (offsetValue === -0) {
-            return
+        offsetValue = ((value / 360) * circleLength * -1).toFixed(2);
+        // console.log('offsetValue', offsetValue);
+        if (parseFloat(offsetValue) === 0) {
+            return;
         }
-
-        // strokeDashoffset.value = Math.min(Math.max(offsetValue, -3500), -25);
-
     }
     strokeDashoffset.value = offsetValue;
 
-    console.log('value', value);
-    console.log('strokeDashoffset.value', strokeDashoffset.value);
+    // console.log('value', value);
+    // console.log('strokeDashoffset.value', strokeDashoffset.value);
 
 
 
@@ -184,10 +169,8 @@ watch(() => shturval.currentValue, (newValue) => {
         }
     }
 
-
     let internalAdjustedValue = newValue - initialShturvalValue.value;
 
-    // Ограничиваем значение в диапазоне 0-360 градусов
     internalAdjustedValue = ((internalAdjustedValue % 360) + 360) % 360;
     if (internalAdjustedValue > maxAdjustedValue.value) {
         maxAdjustedValue.value = internalAdjustedValue;
