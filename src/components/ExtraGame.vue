@@ -88,7 +88,7 @@ const updateTimer = () => {
         time.value -= 0.1;
     } else {
         clearInterval(intervalId);
-        // stopGame.value = true;
+        stopGame.value = true;
         result.value = Math.round(10 / 360 * maxAdjustedValue.value)
         sendResult()
         console.log(result);
