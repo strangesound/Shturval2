@@ -30,11 +30,10 @@
                     </filter>
 
                 </defs>
-                    <g>
-                        <circle ref="donut" class="cls-3" cx="516" cy="516" r="376" 
-                        :stroke-dasharray="strokeDasharray"
+                <g>
+                    <circle ref="donut" class="cls-3" cx="516" cy="516" r="376" :stroke-dasharray="strokeDasharray"
                         :stroke-dashoffset="strokeDashoffset" />
-                    </g>
+                </g>
             </svg>
         </div>
 
@@ -62,7 +61,7 @@ const gameDuration = 3000; // Длительность игры в миллис�
 const stopGame = ref(false)
 const result = ref(0)
 let intervalId;
-
+let bell01Sound;
 
 const emit = defineEmits(['result']);
 const sendResult = () => { emit('result', result.value); };
@@ -91,6 +90,12 @@ const updateTimer = () => {
         stopGame.value = true;
         result.value = Math.round(10 / 360 * maxAdjustedValue.value)
         sendResult()
+
+        bell01Sound = new Audio('/sounds/extraGame/bell01Sound.wav');
+        bell01Sound.currentTime = 0; // Сбросить время воспроизведения
+        bell01Sound.play();
+
+
         console.log(result);
 
     }
@@ -182,7 +187,12 @@ onMounted(() => {
 
 onUnmounted(() => {
     clearInterval(intervalId);
+    if (bell01Sound) {
+        bell01Sound.pause();
+        bell01Sound = null;
+    }
 });
+
 
 
 </script>

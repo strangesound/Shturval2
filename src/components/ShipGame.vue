@@ -42,6 +42,9 @@ const deviations = {
 
 let seaSound;
 let endRouteSound;
+let bell01Sound;
+let bell02Sound;
+let warningAndGame;
 
 
 
@@ -61,11 +64,24 @@ onMounted(() => {
 onUnmounted(() => {
     if (seaSound) {
         seaSound.pause();
-        seaSound = null; // Убираем ссылку на объект
+        seaSound = null;
     }
     if (endRouteSound) {
         endRouteSound.pause();
-        endRouteSound = null; // Убираем ссылку на объект
+        endRouteSound = null;
+    }
+
+    if (bell01Sound) {
+        bell01Sound.pause();
+        bell01Sound = null;
+    }
+    if (bell02Sound) {
+        bell02Sound.pause();
+        bell02Sound = null;
+    }
+    if (warningAndGame) {
+        warningAndGame.pause();
+        warningAndGame = null;
     }
 });
 
@@ -104,7 +120,7 @@ updateInterval = setInterval(() => {
 
 setTimeout(() => {
     hideWarning.value = true;
-}, 4000); // Через 5 секунд установить флаг прозрачности
+}, 5000); // Через 5 секунд установить флаг прозрачности
 
 
 
@@ -144,7 +160,7 @@ function calculateScore() {
     let finalScore = score + extraGameScore.value;
     console.log('finalScore', finalScore);
 
-    return Math.max(40, Math.min(100, finalScore));;
+    return Math.round(Math.max(40, Math.min(100, finalScore)));
 }
 
 function stopGame() {
@@ -309,6 +325,15 @@ async function executeSequence() {
 
     intervalId.value = setInterval(updateTimer, 100);
 
+
+    warningAndGame = new Audio('/sounds/extraGame/warningAndGame.wav');
+    warningAndGame.currentTime = 0; // Сбросить время воспроизведения
+    warningAndGame.play();
+
+    //     let bell01Sound;
+    // let bell02Sound;
+    // let warningAndGame;
+
     await sleep(5000);
     showRotationWarning.value = false;
     console.log('showRotationWarning', showRotationWarning.value);
@@ -317,12 +342,20 @@ async function executeSequence() {
     clearInterval(intervalId.value);
     startExtraGame();
 
+    // bell01Sound = new Audio('/sounds/extraGame/bell01Sound.wav');
+    // bell01Sound.currentTime = 0; // Сбросить время воспроизведения
+    // bell01Sound.play();
+
+
     await sleep(6000);
 
     endExtraGame();
     await sleep(1000);
 
     showSwimFurtherWarning.value = true
+    bell02Sound = new Audio('/sounds/extraGame/bell02Sound.wav');
+    bell02Sound.currentTime = 0; // Сбросить время воспроизведения
+    bell02Sound.play();
 
     await sleep(3000);
 
