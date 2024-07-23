@@ -40,7 +40,7 @@ const currentPointIndex = ref(null);
 const showGame = ref(false);
 const showScreenSaver = ref(false);
 const currentPoint = computed(() => points[currentPointIndex.value]);
-// const extraGameDirection = ref(0)
+// const extraGameDirection = ref(1)
 // console.log('currentPoint', currentPoint);
 
 

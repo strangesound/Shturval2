@@ -9,8 +9,11 @@
             <img src="/images/extra-game/steer-white.webp" alt="" class="rumba absolute5050" :style="rumbaStyle">
 
             <!-- Стрелки -->
-            <img :style="{ opacity: stopGame ? 0 : 1 }" src="/images/extra-game/arrows-white.webp" alt=""
-                class="absolute5050 white-steer-arrows">
+            <img 
+            :style="[imageStyle, { opacity: stopGame ? 0 : 1 }]" 
+            :src="steerArrowsImageSrc" 
+            alt=""
+            class="absolute5050 white-steer-arrows">
 
             <p class="absolute5050 time-text" :style="{ opacity: stopGame ? 0 : 1 }">{{ formattedTime }}</p>
 
@@ -47,8 +50,14 @@ import shturval from '@/store';
 const props = defineProps({
     extraGameDirection: Number
 });
-console.log(props.extraGameDirection);
+// console.log(props.extraGameDirection);
 
+
+const steerArrowsImageSrc = computed(() => {
+  return props.extraGameDirection === 0 
+    ? '/images/extra-game/arrows-white-reverse.webp' 
+    : '/images/extra-game/arrows-white.webp';
+});
 
 
 
